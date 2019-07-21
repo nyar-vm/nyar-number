@@ -26,6 +26,19 @@
 
 
 (* ::Subsection:: *)
+(*Author*)
+
+
+(* ::Text:: *)
+(*Aster*)
+(*July 20, 2019*)
+
+
+(* ::Text:: *)
+(*Improve the algorithm*)
+
+
+(* ::Subsection:: *)
 (*Code*)
 
 
@@ -42,9 +55,8 @@ RightTruncatablePrimes::usage = "RightTruncatablePrime[n] gives the n-digit righ
 
 (*Left Prime Strings*)
 
-LeftTruncatablePrimes[1] := Select[Range[9], PrimeQ]
-
-LeftTruncatablePrimes[n_] := LeftTruncatablePrimes[n] = Select[ToExpression[StringJoin /@ (ToString /@ #& /@ Flatten[Outer[List, Range[1, 9], LeftTruncatablePrimes[n - 1]], 1])], PrimeQ]
+LeftTruncatablePrimes[1] = Select[Range@9, PrimeQ];
+LeftTruncatablePrimes[n_] := LeftTruncatablePrimes[n] = Select[#1 * 10^(n - 1) + #2& @@@ Tuples[{Range@9, LeftTruncatablePrimes[n - 1]}], PrimeQ];
 
 LeftTruncatablePrimesRestricted[1] := {}
 
@@ -54,16 +66,43 @@ prependedDigitList[n_] := FromDigits[Prepend[IntegerDigits[n], #]]& /@ Range[9]
 
 (*Right Prime Strings*)
 
-RightTruncatablePrimes[1] := Select[Range[9], PrimeQ]
-
-RightTruncatablePrimes[n_] := RightTruncatablePrimes[n] = Select[ToExpression[StringJoin /@ (ToString /@ #& /@ Flatten[Outer[List, RightTruncatablePrimes[n - 1], {1, 3, 6, 7, 8, 9}], 1])], PrimeQ]
+RightTruncatablePrimes[1] = Select[Range@9, PrimeQ];
+RightTruncatablePrimes[n_] := RightTruncatablePrimes[n] = Select[10 * #1 + #2 & @@@ Tuples[{RightTruncatablePrimes[n - 1], {1, 3, 6, 7, 8, 9}}], PrimeQ];
 
 
 (* ::Section:: *)
 (*Left Truncatable Primes*)
 
 
-Length /@ (l = LeftTruncatablePrimes /@ Range[30]) // TT
+
+Module[
+	{},
+	LTPs = LeftTruncatablePrimes /@ Range[25] // Flatten;
+	
+	file = StringTemplate["\
+use num::BigInt;
+
+pub fn get_left_truncatable_primes() -> Vec<BigInt> {
+    let left_truncatable_primes = `vec`;
+    let iter = left_truncatable_primes.into_iter();
+    iter.map(|n| BigInt::from(n)).collect()
+}
+
+#[test]
+fn count() {
+    let lrps = get_left_truncatable_primes();
+    assert_eq!(lrps.len(), `count`)
+}
+"];
+	count = Length@LTPs;
+	
+	vec = "vec![\n" <> StringRiffle[{#, "i128"}& /@ LTPs, ", \n", ""] <> ",\n]" ;
+	
+	file[<|"count" -> count, "vec" -> vec|>]
+
+]
+
+
 
 
 Plus @@%
