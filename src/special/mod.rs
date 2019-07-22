@@ -1,6 +1,7 @@
+pub use fermat_prime::get_fermat_primes;
+pub use fermat_prime::FermatPrime;
+
+pub mod fermat_prime;
+
 pub mod truncatable_prime;
-mod truncatable_primes_left;
-mod truncatable_primes_right;
 
-
-pub use truncatable_prime::get_left_truncatable_primes;

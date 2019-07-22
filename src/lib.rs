@@ -1,14 +1,17 @@
-//! Compresses the input from stdin and writes the result to stdout.
-
-extern crate num;
+#![feature(unboxed_closures, fn_traits)]
+extern crate num_bigint;
+extern crate overloadable;
 extern crate primal;
-#[macro_use]
-extern crate lazy_static;
 
 pub mod auxiliary;
+pub mod checker;
 pub mod prime_count;
 pub mod special;
 
+
+pub use checker::is_fermat_prime;
+
+/*
 #[no_mangle]
 /// - `n`: The nth prime
 pub extern "C" fn prime_n(n: usize) {}
@@ -35,3 +38,5 @@ pub extern "C" fn prime_sum(n: usize) {}
 
 #[no_mangle]
 pub extern "C" fn prime_sum_range(min: usize, max: usize, step: usize) {}
+
+*/
