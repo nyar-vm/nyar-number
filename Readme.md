@@ -1,7 +1,7 @@
 Nyar Prime Lib
 ==============
 
-All based on bigint
+All based on bigint, but some support both `i32`, `i64` and `bigint`.
 
 ## Fetmat Primes
 

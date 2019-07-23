@@ -1,13 +1,10 @@
-#![feature(unboxed_closures, fn_traits)]
 extern crate num_bigint;
-extern crate overloadable;
 extern crate primal;
 
 pub mod auxiliary;
 pub mod checker;
 pub mod prime_count;
 pub mod special;
-
 
 pub use checker::is_fermat_prime;
 
