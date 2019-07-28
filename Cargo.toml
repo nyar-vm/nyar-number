@@ -1,6 +1,6 @@
 [package]
 name = "nyar_prime"
-version = "0.0.2"
+version = "0.1.0"
 authors = ["Aster <galaster@foxmail.com>"]
 description = "Prime lib for Nyar"
 license = "MPL-2.0"
@@ -13,7 +13,7 @@ edition = "2018"
 [dependencies]
 primal = "0.2.3"
 rand = "0.7.0"
-num-bigint = "0.1.39"
+num = "0.2"
 
 [dev-dependencies]
 criterion = "0.2"

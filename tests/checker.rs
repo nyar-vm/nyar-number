@@ -1,4 +1,4 @@
-use num_bigint::BigInt;
+use num::BigInt;
 
 use prime::is_fermat_prime;
 

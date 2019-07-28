@@ -1,5 +1,5 @@
 pub use fermat_prime::get_fermat_primes;
-pub use fermat_prime::FermatPrime;
+pub use fermat_prime::FermatNumber;
 
 pub mod primorial;
 pub mod primorial_pi;

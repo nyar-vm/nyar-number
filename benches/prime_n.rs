@@ -1,7 +1,6 @@
 use criterion::{Criterion, Fun};
 use primal::Sieve;
 
-
 pub fn prime_n_benches(c: &mut Criterion) {
     let sieve = Sieve::new(15485863);
     let prime_1w = Fun::new("[1:10000:100]", move |b, _| {
@@ -31,7 +30,6 @@ pub fn prime_n_benches(c: &mut Criterion) {
     c.bench_functions("PrimeN", tests, ());
 }
 
-
 /*
 fn prime_n(sieve: &Sieve, n: usize) -> usize {
     sieve.nth_prime(n)
@@ -43,4 +41,3 @@ pub fn prime_n_benches(c: &mut Criterion) {
     c.bench_function("Prime 100000", |b| b.iter(|| { prime_n(&ctx, 100000) }));
 }
 */
-
