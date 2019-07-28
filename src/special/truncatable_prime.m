@@ -53,6 +53,8 @@ RightTruncatablePrimeQ::usage = "RightTruncatablePrimeQ[n] returns True if n and
 RightTruncatablePrimes::usage = "RightTruncatablePrime[n] gives the n-digit right prime strings."
 
 
+SetDirectory@NotebookDirectory[];
+
 (*Left Prime Strings*)
 
 LeftTruncatablePrimes[1] = Select[Range@9, PrimeQ];
@@ -74,51 +76,11 @@ RightTruncatablePrimes[n_] := RightTruncatablePrimes[n] = Select[10 * #1 + #2 & 
 (*Left Truncatable Primes*)
 
 
-
 Module[
-	{},
+	{LTPs},
 	LTPs = LeftTruncatablePrimes /@ Range[25] // Flatten;
-	
-	file = StringTemplate["\
-use num::BigInt;
-
-pub fn get_left_truncatable_primes() -> Vec<BigInt> {
-    let left_truncatable_primes = `vec`;
-    let iter = left_truncatable_primes.into_iter();
-    iter.map(|n| BigInt::from(n)).collect()
-}
-
-#[test]
-fn count() {
-    let lrps = get_left_truncatable_primes();
-    assert_eq!(lrps.len(), `count`)
-}
-"];
-	count = Length@LTPs;
-	
-	vec = "vec![\n" <> StringRiffle[{#, "i128"}& /@ LTPs, ", \n", ""] <> ",\n]" ;
-	
-	file[<|"count" -> count, "vec" -> vec|>]
-
+	Export["truncatable_primes_left.txt", StringRiffle[LTPs, "\n"], "Plaintext", CharacterEncoding -> "UTF8"]
 ]
-
-
-
-
-Plus @@%
-
-
-Take[Flatten[l], 20]
-
-
-{#, IntegerDigits[#] // Length}&[Last[Flatten[l]]]
-
-
-(* ::Subsection:: *)
-(*Odd*)
-
-
-Select[Flatten[l], And @@ (OddQ /@ IntegerDigits[#])&]
 
 
 (* ::Subsection:: *)
@@ -141,19 +103,11 @@ Take[Flatten[lr], 20]
 (*Right Truncatable Primes*)
 
 
-Length /@ (r = RightTruncatablePrimes /@ Range[10])
-
-
-Plus @@%
-
-
-Take[Flatten[r], 20]
-
-
-{#, IntegerDigits[#] // Length}&[Last[Flatten[r]]]
-
-
-Union[RightPrimeStringQ /@ RightPrimes]
+Module[
+	{RTPs},
+	RTPs = RightTruncatablePrimes /@ Range[10] // Flatten;
+	Export["truncatable_primes_right.txt", StringRiffle[LTPs, "\n"], "Plaintext", CharacterEncoding -> "UTF8"]
+]
 
 
 (* ::Subsection:: *)
