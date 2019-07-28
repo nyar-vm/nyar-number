@@ -24,11 +24,11 @@ impl FermatNumber {
     }
 }
 
-impl<T> From<T> for FermatNumber {
-    fn from(i: T) -> FermatNumber
-    where
-        BigInt: From<T>,
-    {
+impl<T> From<T> for FermatNumber
+where
+    BigInt: From<T>,
+{
+    fn from(i: T) -> FermatNumber {
         let v = BigInt::from(i);
         //let f = log2(log2(v - 1));
         FermatNumber { index: v }
