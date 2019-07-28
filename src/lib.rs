@@ -7,7 +7,7 @@ pub mod prime_count;
 pub mod special;
 
 pub use checker::is_fermat_prime;
-
+pub use special::*;
 /*
 #[no_mangle]
 /// - `n`: The nth prime
