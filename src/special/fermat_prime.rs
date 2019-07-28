@@ -4,6 +4,9 @@ use std::str::FromStr;
 
 use num::BigInt;
 
+use crate::auxiliary::power;
+use core::borrow::Borrow;
+
 /// A Fermat prime is the Fermat number $F_n=2^{2^n}+1$ that is prime.
 pub struct FermatNumber {
     index: BigInt,
@@ -22,6 +25,12 @@ impl FermatNumber {
         // $F_n$ is a prime，only if $3^{{{\frac  {F_{n}-1}{2}}}}\equiv -1{\pmod  {F_{n}}}$
         unimplemented!()
     }
+    pub fn value(&self) -> BigInt {
+        let b = BigInt::from(2);
+        let index = &self.index;
+        let e = power(b.clone(), index.clone());
+        power(b, e) + 1
+    }
 }
 
 impl<T> From<T> for FermatNumber
@@ -35,12 +44,12 @@ where
     }
 }
 
+fn known_fermat_indexes() -> Vec<BigInt> {
+    const I: &[i8] = &[0, 1, 2, 3, 4];
+    I.to_vec().iter().map(|x| BigInt::from(*x)).collect()
+}
+
 pub fn get_fermat_primes() -> Vec<BigInt> {
-    const TEXT: &str = include_str!("fermat_primes.txt");
-    let mut result: Vec<BigInt> = vec![];
-    for s in TEXT.lines() {
-        let i = BigInt::from_str(s).unwrap();
-        result.push(i)
-    }
-    result
+    let v = known_fermat_indexes().into_iter();
+    v.map(|x| FermatNumber::from(x.clone()).value()).collect()
 }
