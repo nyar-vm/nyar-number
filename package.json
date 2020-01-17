@@ -1,0 +1,13 @@
+{
+    "name": "native-nyar",
+    "private": true,
+    "scripts": {
+        "build:pre": "cargo run --release --color=always --package nyar-prebuild --bin nyar-prebuild && cargo fmt --all",
+        "build": "cargo build --release",
+        "test": "cargo build",
+        "fmt": "cargo fmt --all",
+        "push": "yarn test && git push",
+        "reset": "git reset Head~ --soft",
+        "u": "cargo upgrade --workspace"
+    }
+}

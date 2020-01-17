@@ -1,9 +1,15 @@
 # IDE
-.idea/
+.vscode
+.idea
 *.iml
+time-travel.*
 
-
-# Build
-/target
+# Rust
+target/
 Cargo.lock
-**/*.rs.bk
+Untitled.ipynb
+.ipynb_checkpoints/
+
+# Antlr
+.antlr/
+*.jar

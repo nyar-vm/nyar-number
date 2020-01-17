@@ -1,0 +1,35 @@
+[package]
+name = "valkyrie-types"
+version = "0.0.5"
+authors = ["Aster <192607617@qq.com>"]
+description = "Shard types for valkyrie language"
+repository = "https://github.com/nyar-vm/valkyrie.rs"
+documentation = "https://docs.rs/valkyrie-types"
+readme = "Readme.md"
+license = "MPL-2.0"
+edition = "2021"
+
+[dependencies]
+serde = "1.0.188"
+shredder = "0.2.0"
+patricia_tree = "0.6.2"
+num-traits = "0.2.16"
+indexmap = "2.0.0"
+itertools = "0.11.0"
+image = { version = "0.24.7", features = [] }
+ndarray = { version = "0.15.6", features = [] }
+polars = { version = "0.33.2", features = ["lazy"], optional = true }
+
+[dependencies.valkyrie-error]
+version = "0.1.*"
+path = "../valkyrie-errors"
+features = ["serde_json", "json5", "dashu"]
+
+[dependencies.valkyrie-ast]
+version = "0.1.*"
+path = "../valkyrie-ast"
+
+[dev-dependencies]
+
+[features]
+default = []
