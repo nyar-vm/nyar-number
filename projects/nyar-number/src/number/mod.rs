@@ -1,25 +1,27 @@
-use crate::integer::ValkyrieInteger;
+use crate::integer::NyarInteger;
+
 use shredder::{Gc, Scan};
 
-#[derive(Clone, Debug, Scan)]
-pub enum ValkyrieNumber {
+// #[derive(Clone, Debug, Scan)]
+pub enum NyarNumber {
     /// A signed integer
     Integer {
-        negative: bool,
-        represent: Gc<ValkyrieInteger>,
+        ///
+        positive: bool,
+        represent: Gc<NyarInteger>,
     },
     /// A signed rational number
     Rational {
-        negative: bool,
-        numerator: Gc<ValkyrieInteger>,
-        denominator: Gc<ValkyrieInteger>,
+        positive: bool,
+        numerator: Gc<NyarInteger>,
+        denominator: Gc<NyarInteger>,
     },
     /// A signed decimal number
     Decimal {
-        represent: Gc<ValkyrieInteger>,
+        represent: Gc<NyarInteger>,
     },
     Complex {
-        re: Gc<ValkyrieNumber>,
-        im: Gc<ValkyrieNumber>,
+        re: Gc<NyarNumber>,
+        im: Gc<NyarNumber>,
     },
 }
