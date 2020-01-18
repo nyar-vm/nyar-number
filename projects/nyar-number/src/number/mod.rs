@@ -1,36 +1,25 @@
-use super::*;
-use shredder::{Gc, Scanner};
-use valkyrie_error::third_party::UBig;
+use crate::integer::ValkyrieInteger;
+use shredder::{Gc, Scan};
 
-pub struct ValkyrieInteger {
-    _repr: UBig,
-}
-pub struct ValkyrieDecimal {
-    _repr: FBig,
-}
-
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Scan)]
 pub enum ValkyrieNumber {
-    Integer { negative: bool, represent: Gc<ValkyrieInteger> },
-    Decimal { represent: Gc<ValkyrieDecimal> },
-    Rational { negative: bool, numerator: Gc<ValkyrieInteger>, denominator: Gc<ValkyrieInteger> },
+    /// A signed integer
+    Integer {
+        negative: bool,
+        represent: Gc<ValkyrieInteger>,
+    },
+    /// A signed rational number
+    Rational {
+        negative: bool,
+        numerator: Gc<ValkyrieInteger>,
+        denominator: Gc<ValkyrieInteger>,
+    },
+    /// A signed decimal number
+    Decimal {
+        represent: Gc<ValkyrieInteger>,
+    },
+    Complex {
+        re: Gc<ValkyrieNumber>,
+        im: Gc<ValkyrieNumber>,
+    },
 }
-
-unsafe impl GcSafe for ValkyrieInteger {}
-
-unsafe impl Scan for ValkyrieInteger {
-    fn scan(&self, scanner: &mut Scanner<'_>) {
-        match self {
-            ValkyrieNumber::Integer { .. } => {}
-            ValkyrieNumber::Decimal(_) => {}
-            ValkyrieNumber::Rational { .. } => {}
-        }
-    }
-}
-
-//
-// impl From<u8> for ValkyrieNumber {
-//     fn from(value: u8) -> Self {
-//         Self::Integer { negative: false, represent: () }
-//     }
-// }

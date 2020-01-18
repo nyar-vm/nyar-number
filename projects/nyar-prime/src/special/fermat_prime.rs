@@ -7,7 +7,7 @@ use num::BigInt;
 use crate::auxiliary::power;
 use core::borrow::Borrow;
 
-/// A Fermat prime is the Fermat number $F_n=2^{2^n}+1$ that is prime.
+/// A Fermat prime is the Fermat integer $F_n=2^{2^n}+1$ that is prime.
 pub struct FermatNumber {
     index: BigInt,
 }
@@ -59,8 +59,5 @@ impl From<&str> for FermatNumber {
 const KNOWN_FERMAT_PRIME_INDEXES: &[i8] = &[0, 1, 2, 3, 4];
 pub fn get_fermat_primes() -> Vec<BigInt> {
     let v = KNOWN_FERMAT_PRIME_INDEXES.to_vec();
-    v.iter()
-        .map(|x| BigInt::from(*x))
-        .map(|x| FermatNumber::from(x).value())
-        .collect()
+    v.iter().map(|x| BigInt::from(*x)).map(|x| FermatNumber::from(x).value()).collect()
 }

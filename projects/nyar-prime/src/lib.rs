@@ -17,7 +17,7 @@ pub extern "C" fn prime_n(n: usize) {}
 pub extern "C" fn prime_n_range(min: usize, max: usize, step: usize) {}
 
 #[no_mangle]
-/// - `p`: A number
+/// - `p`: A integer
 /// - `n`: default - 1
 ///   - `n < 0`: The next nth prime
 ///   - `n = 0`: Error
