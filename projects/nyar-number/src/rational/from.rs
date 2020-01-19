@@ -1,10 +1,9 @@
 use super::*;
-use num::Signed;
 
 impl From<BigRational> for NyarRational {
     fn from(value: BigRational) -> Self {
-        let sign = NyarSign::from(value.is_positive());
         let (num, den) = value.into();
+        let sign = num.sign().mul(den.sign());
         let num = NyarInteger::from(num);
         let den = NyarInteger::from(den);
         NyarRational { sign, numerator: num.digits, denominator: den.digits }
