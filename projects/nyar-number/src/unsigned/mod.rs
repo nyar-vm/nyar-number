@@ -1,17 +1,21 @@
 use num::{BigUint, One, Zero};
 use shredder::{
     marker::{GcDrop, GcSafe},
-    Scan, Scanner,
+    Gc, Scan, Scanner,
 };
 use std::{
     fmt::{Debug, Display, Formatter},
     num::IntErrorKind,
-    ops::{Add, Div, Mul, Sub},
+    ops::{Add, Mul},
     str::FromStr,
+    sync::LazyLock,
 };
 
 mod arith;
 mod from;
+
+pub(crate) static ZERO: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: BigUint::zero() }));
+pub(crate) static ONE: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: BigUint::one() }));
 
 #[derive(Clone, Default, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarUnsigned {

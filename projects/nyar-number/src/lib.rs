@@ -1,3 +1,4 @@
+#![feature(lazy_cell)]
 extern crate core;
 
 mod decimal;

@@ -46,10 +46,15 @@ impl Display for NyarInteger {
 }
 
 impl NyarInteger {
+    /// Create a new signed integer and box the unsigned value
     pub fn new<T>(sign: Sign, value: T) -> Self
     where
         T: Into<NyarUnsigned>,
     {
         Self { sign, digits: Gc::new(value.into()) }
+    }
+
+    pub(crate) fn wrapped(&self) -> BigInt {
+        BigInt::from_biguint(self.sign, self.digits.get()._repr.clone())
     }
 }

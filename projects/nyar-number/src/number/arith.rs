@@ -37,16 +37,14 @@ impl Sub for NyarNumber {
         todo!()
     }
 }
+
 impl Mul for NyarNumber {
     type Output = Self;
 
     fn mul(self, other: Self) -> Self::Output {
         match self {
-            NyarNumber::Integer(lhs) => match other {
-                NyarNumber::Integer(rhs) => lhs.mul(rhs).into(),
-                NyarNumber::Rational(_) => {
-                    todo!()
-                }
+            NyarNumber::Rational(lhs) => match other {
+                NyarNumber::Rational(rhs) => lhs.mul(rhs).into(),
                 NyarNumber::Decimal(_) => {
                     todo!()
                 }
@@ -54,9 +52,6 @@ impl Mul for NyarNumber {
                     todo!()
                 }
             },
-            NyarNumber::Rational(_) => {
-                todo!()
-            }
             NyarNumber::Decimal(_) => {
                 todo!()
             }
@@ -70,8 +65,26 @@ impl Mul for NyarNumber {
 impl Div for NyarNumber {
     type Output = Self;
 
-    fn div(self, rhs: Self) -> Self::Output {
-        todo!()
+    fn div(self, other: Self) -> Self::Output {
+        match self {
+            NyarNumber::Rational(_) => match other {
+                NyarNumber::Rational(_) => {
+                    todo!()
+                }
+                NyarNumber::Decimal(_) => {
+                    todo!()
+                }
+                NyarNumber::Complex(_) => {
+                    todo!()
+                }
+            },
+            NyarNumber::Decimal(_) => {
+                todo!()
+            }
+            NyarNumber::Complex(_) => {
+                todo!()
+            }
+        }
     }
 }
 

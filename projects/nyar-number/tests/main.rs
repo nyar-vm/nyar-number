@@ -13,6 +13,7 @@ fn test_primitive() {
     let i1 =
         NyarNumber::parse_integer("145175341267598143125685194855555555555555555666666666666666666666666666666666666666666425")
             .expect("");
+    let a2 = NyarNumber::from(2);
     let i2 = i1.clone();
     println!("{i1:#?}");
     println!("{i1}");

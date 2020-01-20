@@ -1,5 +1,6 @@
 use super::*;
-
+use crate::NyarNumber;
+use num::{BigInt, BigUint};
 impl From<BigRational> for NyarRational {
     fn from(value: BigRational) -> Self {
         let (num, den) = value.into();
@@ -20,3 +21,22 @@ impl FromStr for NyarRational {
         }
     }
 }
+
+impl From<NyarInteger> for NyarRational {
+    fn from(value: NyarInteger) -> Self {
+        Self { sign: value.sign, numerator: value.digits, denominator: ONE.clone() }
+    }
+}
+
+macro_rules! impl_integer {
+    ($($ty:ty),*) => {$(
+        impl From<$ty> for NyarRational {
+            fn from(value: $ty) -> Self {
+                NyarRational::from(NyarInteger::from(value))
+            }
+            }
+        )*};
+}
+
+impl_integer![u8, u16, u32, u64, u128, usize, BigUint, &BigUint];
+impl_integer![i8, i16, i32, i64, i128, isize, BigInt, &BigInt];

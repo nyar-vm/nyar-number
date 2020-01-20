@@ -1,9 +1,10 @@
 use super::*;
-use std::cmp::Ordering;
+use crate::unsigned::{ONE, ZERO};
+use num::Integer;
 
 impl Zero for NyarInteger {
     fn zero() -> Self {
-        Self { sign: Sign::NoSign, digits: Default::default() }
+        Self { sign: Sign::NoSign, digits: ZERO.clone() }
     }
 
     fn is_zero(&self) -> bool {
@@ -13,7 +14,7 @@ impl Zero for NyarInteger {
 
 impl One for NyarInteger {
     fn one() -> Self {
-        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned::one()) }
+        Self { sign: Sign::NoSign, digits: ONE.clone() }
     }
 }
 
@@ -30,23 +31,11 @@ impl Add for NyarInteger {
 
     fn add(self, other: Self) -> Self::Output {
         match (self.sign, other.sign) {
+            // non allocate path
             (_, Sign::NoSign) => self,
             (Sign::NoSign, _) => other,
-            (Sign::Plus, Sign::Plus) | (Sign::Minus, Sign::Minus) => {
-                let value = self.digits.get().clone() + other.digits.get().clone();
-                Self { sign: self.sign, digits: Gc::new(value) }
-            }
-            (Sign::Plus, Sign::Minus) | (Sign::Minus, Sign::Plus) => match self.digits.cmp(&other.digits) {
-                Ordering::Less => {
-                    let value = other.digits.get().clone() - self.digits.get().clone();
-                    Self { sign: other.sign, digits: Gc::new(value) }
-                }
-                Ordering::Greater => {
-                    let value = self.digits.get().clone() - other.digits.get().clone();
-                    Self { sign: self.sign, digits: Gc::new(value) }
-                }
-                Ordering::Equal => Zero::zero(),
-            },
+            // non reusable path
+            _ => self.wrapped().add(other.wrapped()).into(),
         }
     }
 }
@@ -55,23 +44,11 @@ impl Sub for NyarInteger {
 
     fn sub(self, other: Self) -> Self::Output {
         match (self.sign, other.sign) {
+            // non allocate path
             (_, Sign::NoSign) => self,
             (Sign::NoSign, _) => -other,
-            (Sign::Plus, Sign::Minus) | (Sign::Minus, Sign::Plus) => {
-                let value = self.digits.get().clone() + other.digits.get().clone();
-                Self { sign: self.sign, digits: Gc::new(value) }
-            }
-            (Sign::Plus, Sign::Plus) | (Sign::Minus, Sign::Minus) => match self.digits.cmp(&other.digits) {
-                Ordering::Less => {
-                    let value = other.digits.get().clone() - self.digits.get().clone();
-                    Self { sign: -self.sign, digits: Gc::new(value) }
-                }
-                Ordering::Greater => {
-                    let value = self.digits.get().clone() + other.digits.get().clone();
-                    Self { sign: self.sign, digits: Gc::new(value) }
-                }
-                Ordering::Equal => Zero::zero(),
-            },
+            // non reusable path
+            _ => self.wrapped().sub(other.wrapped()).into(),
         }
     }
 }
@@ -81,8 +58,24 @@ impl Mul for NyarInteger {
 
     fn mul(self, rhs: Self) -> Self::Output {
         let sign = self.sign.mul(rhs.sign);
-        let value = self.digits.get().clone()._repr.mul(rhs.digits.get().clone()._repr);
-        Self { sign, digits: Gc::new(NyarUnsigned { _repr: value }) }
+        let lhs_view = self.digits.get();
+        let rhs_view = rhs.digits.get();
+        if lhs_view.is_zero() || rhs_view.is_zero() {
+            // non allocate path
+            return NyarInteger::zero();
+        }
+        else if lhs_view.is_one() {
+            // non allocate path
+            return Self { sign, digits: rhs.digits.clone() };
+        }
+        else if rhs_view.is_one() {
+            // non allocate path
+            return Self { sign, digits: self.digits.clone() };
+        }
+        else {
+            let value = self.digits.get().clone()._repr.mul(rhs.digits.get().clone()._repr);
+            Self { sign, digits: Gc::new(NyarUnsigned { _repr: value }) }
+        }
     }
 }
 
@@ -90,7 +83,15 @@ impl Div for NyarInteger {
     type Output = Self;
 
     fn div(self, rhs: Self) -> Self::Output {
-        todo!()
+        if rhs.is_one() {
+            return self;
+        }
+        else if rhs.digits.get().is_one() {
+            return Self { sign: -self.sign, digits: self.digits.clone() };
+        }
+        else {
+            self.wrapped().div(rhs.wrapped()).into()
+        }
     }
 }
 
@@ -98,7 +99,7 @@ impl Rem for NyarInteger {
     type Output = Self;
 
     fn rem(self, rhs: Self) -> Self::Output {
-        todo!()
+        self.wrapped().rem(rhs.wrapped()).into()
     }
 }
 
@@ -106,22 +107,69 @@ impl Rem for NyarInteger {
 
 impl Signed for NyarInteger {
     fn abs(&self) -> Self {
-        todo!()
+        Self { sign: Sign::Plus, digits: self.digits.clone() }
     }
 
     fn abs_sub(&self, other: &Self) -> Self {
-        todo!()
+        self.wrapped().abs_sub(&other.wrapped()).into()
     }
 
     fn signum(&self) -> Self {
-        todo!()
+        match self.sign {
+            Sign::Minus => -Self::one(),
+            Sign::NoSign => Self::zero(),
+            Sign::Plus => Self::one(),
+        }
     }
 
     fn is_positive(&self) -> bool {
-        todo!()
+        match self.sign {
+            Sign::Minus => true,
+            Sign::NoSign => false,
+            Sign::Plus => false,
+        }
     }
 
     fn is_negative(&self) -> bool {
-        todo!()
+        !self.is_positive()
+    }
+}
+
+impl Integer for NyarInteger {
+    fn div_floor(&self, other: &Self) -> Self {
+        self.wrapped().div_floor(&other.wrapped()).into()
+    }
+
+    fn mod_floor(&self, other: &Self) -> Self {
+        self.wrapped().mod_floor(&other.wrapped()).into()
+    }
+
+    fn gcd(&self, other: &Self) -> Self {
+        self.wrapped().gcd(&other.wrapped()).into()
+    }
+
+    fn lcm(&self, other: &Self) -> Self {
+        self.wrapped().lcm(&other.wrapped()).into()
+    }
+
+    fn divides(&self, other: &Self) -> bool {
+        self.digits.get()._repr.is_multiple_of(&other.digits.get()._repr)
+    }
+
+    fn is_multiple_of(&self, other: &Self) -> bool {
+        self.digits.get()._repr.is_multiple_of(&other.digits.get()._repr)
+    }
+
+    fn is_even(&self) -> bool {
+        self.digits.get()._repr.is_even()
+    }
+
+    fn is_odd(&self) -> bool {
+        self.digits.get()._repr.is_odd()
+    }
+
+    fn div_rem(&self, other: &Self) -> (Self, Self) {
+        let (a, b) = self.wrapped().div_rem(&other.wrapped());
+        (a.into(), b.into())
     }
 }

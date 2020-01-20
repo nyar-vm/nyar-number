@@ -1,9 +1,17 @@
 use super::*;
 
+impl NyarUnsigned {
+    fn zero() -> Gc<Self> {
+        ZERO.clone()
+    }
+    fn one() -> Gc<Self> {
+        ONE.clone()
+    }
+}
 
 impl Zero for NyarUnsigned {
     fn zero() -> Self {
-        Self { _repr: BigUint::default() }
+        ZERO.get().clone()
     }
 
     fn is_zero(&self) -> bool {
@@ -24,25 +32,11 @@ impl Add for NyarUnsigned {
         Self { _repr: self._repr.add(rhs._repr) }
     }
 }
-impl Sub for NyarUnsigned {
-    type Output = Self;
-
-    fn sub(self, _: Self) -> Self::Output {
-        unreachable!()
-    }
-}
 
 impl Mul for NyarUnsigned {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
         Self { _repr: self._repr.mul(rhs._repr) }
-    }
-}
-impl Div for NyarUnsigned {
-    type Output = Self;
-
-    fn div(self, rhs: Self) -> Self::Output {
-        todo!()
     }
 }

@@ -1,7 +1,8 @@
+mod arith;
 mod from;
 
-use crate::{NyarInteger, NyarUnsigned};
-use num::{bigint::Sign, BigRational};
+use crate::{unsigned::ONE, NyarInteger, NyarUnsigned};
+use num::{bigint::Sign, BigRational, One};
 use shredder::{
     marker::{GcDrop, GcSafe},
     Gc, Scan, Scanner,
@@ -12,7 +13,6 @@ use std::{
     ops::Mul,
     str::FromStr,
 };
-
 #[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarRational {
     pub sign: Sign,
@@ -38,7 +38,10 @@ impl Display for NyarRational {
             Sign::Plus => {}
         }
         Display::fmt(&self.numerator, f)?;
-        f.write_char('/')?;
-        Display::fmt(&self.denominator, f)
+        if !self.denominator.get().is_one() {
+            f.write_char('/')?;
+            Display::fmt(&self.denominator, f)?
+        }
+        Ok(())
     }
 }
