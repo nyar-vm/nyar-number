@@ -1,56 +1,52 @@
 use super::*;
-use crate::unsigned::ZERO;
 
-impl Zero for NyarRational {
+impl Zero for NyarDecimal {
     fn zero() -> Self {
-        Self { sign: Sign::Plus, numerator: ZERO.clone(), denominator: ONE.clone() }
+        Self { sign: Sign::Plus, digits: ZERO.clone(), scale: 0 }
     }
 
     fn is_zero(&self) -> bool {
-        self.numerator.get().is_zero()
+        todo!()
+    }
+}
+impl One for NyarDecimal {
+    fn one() -> Self {
+        Self { sign: Sign::Plus, digits: ONE.clone(), scale: 0 }
     }
 }
 
-impl One for NyarRational {
-    fn one() -> Self {
-        Self { sign: Sign::Plus, numerator: ONE.clone(), denominator: ONE.clone() }
-    }
-}
-impl Neg for NyarRational {
+impl Neg for NyarDecimal {
     type Output = Self;
 
     fn neg(self) -> Self::Output {
-        Self { sign: -self.sign, numerator: self.numerator, denominator: self.denominator }
+        Self { sign: -self.sign, digits: self.digits, scale: self.scale }
     }
 }
-impl Add for NyarRational {
+
+impl Add for NyarDecimal {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self::Output {
         self.delegate().add(rhs.delegate()).into()
     }
 }
-impl Sub for NyarRational {
+impl Sub for NyarDecimal {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self::Output {
-        self.delegate().add(rhs.delegate()).into()
+        self.delegate().sub(rhs.delegate()).into()
     }
 }
 
-impl Mul for NyarRational {
+impl Mul for NyarDecimal {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
-        // let sign = self.sign.mul(rhs.sign);
-        // let numerator = Gc::new(self.numerator.get().clone().mul(rhs.numerator.get().clone()));
-        // let denominator = Gc::new(self.denominator.get().clone().mul(rhs.denominator.get().clone()));
-        // NyarRational { sign, numerator, denominator }
         self.delegate().mul(rhs.delegate()).into()
     }
 }
 
-impl Div for NyarRational {
+impl Div for NyarDecimal {
     type Output = Self;
 
     fn div(self, rhs: Self) -> Self::Output {
@@ -58,7 +54,7 @@ impl Div for NyarRational {
     }
 }
 
-impl Rem for NyarRational {
+impl Rem for NyarDecimal {
     type Output = Self;
 
     fn rem(self, rhs: Self) -> Self::Output {
@@ -66,9 +62,9 @@ impl Rem for NyarRational {
     }
 }
 
-impl Signed for NyarRational {
+impl Signed for NyarDecimal {
     fn abs(&self) -> Self {
-        Self { sign: Sign::Plus, numerator: self.numerator.clone(), denominator: self.denominator.clone() }
+        Self { sign: Sign::Plus, digits: self.digits.clone(), scale: self.scale }
     }
 
     fn abs_sub(&self, other: &Self) -> Self {
@@ -80,10 +76,10 @@ impl Signed for NyarRational {
     }
 
     fn is_positive(&self) -> bool {
-        todo!()
+        self.sign == Sign::Plus
     }
 
     fn is_negative(&self) -> bool {
-        todo!()
+        self.sign == Sign::Minus
     }
 }

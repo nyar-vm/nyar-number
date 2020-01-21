@@ -1,6 +1,6 @@
 [package]
 name = "nyar-number"
-version = "0.2.5"
+version = "0.2.6"
 authors = ["Aster <192607617@qq.com>"]
 description = "Shard types for valkyrie language"
 repository = "https://github.com/nyar-vm/nyar-prime"
@@ -12,6 +12,7 @@ edition = "2021"
 [dependencies]
 shredder = "0.2.0"
 num = "0.4.1"
+bigdecimal = "0.4.1"
 serde = { version = "1.0.188", optional = true }
 rand = { version = "0.8.5", optional = true }
 
@@ -19,5 +20,5 @@ rand = { version = "0.8.5", optional = true }
 
 [features]
 default = []
-serde = ["dep:serde", "num/serde"]
+serde = ["dep:serde", "num/serde", "bigdecimal/serde"]
 rand = ["dep:rand", "num/rand"]

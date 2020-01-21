@@ -1,5 +1,5 @@
 use super::*;
-use num::{BigInt, BigUint, Num};
+
 impl Num for NyarNumber {
     type FromStrRadixErr = ();
 

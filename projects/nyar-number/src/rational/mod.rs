@@ -2,21 +2,28 @@ mod arith;
 mod from;
 
 use crate::{unsigned::ONE, NyarInteger, NyarUnsigned};
-use num::{bigint::Sign, BigRational, One};
+use num::{bigint::Sign, BigInt, BigRational, BigUint, Num, One, Signed, Zero};
 use shredder::{
     marker::{GcDrop, GcSafe},
     Gc, Scan, Scanner,
 };
 use std::{
     fmt::{Display, Formatter, Write},
-    num::IntErrorKind,
-    ops::Mul,
+    ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
 };
+/// Infinite precision rational number type
 #[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarRational {
+    /// Sign of rational numbers
+    ///
+    /// Used to distinguish between positive infinity and negative infinity when necessary
     pub sign: Sign,
+    /// Numerator of rational numbers
     pub numerator: Gc<NyarUnsigned>,
+    /// Denominator of rational numbers
+    ///
+    /// If the denominator is zero, it means infinity
     pub denominator: Gc<NyarUnsigned>,
 }
 
@@ -43,5 +50,29 @@ impl Display for NyarRational {
             Display::fmt(&self.denominator, f)?
         }
         Ok(())
+    }
+}
+
+impl NyarRational {
+    pub(crate) fn delegate(&self) -> BigRational {
+        let num = BigInt::from_biguint(self.sign, self.numerator.get()._repr.clone());
+        let den = BigInt::from_biguint(Sign::Plus, self.denominator.get()._repr.clone());
+        BigRational::new(num, den)
+    }
+
+    /// Check if this represents the infinity
+    pub fn is_infinite(&self) -> bool {
+        // operations that require lock acquisition are placed later.
+        self.denominator.get().is_zero()
+    }
+
+    /// Check if this represents the positive infinity
+    pub fn is_positive_infinite(&self) -> bool {
+        self.sign == Sign::Plus && self.is_positive()
+    }
+
+    /// Check if this represents the negative infinity
+    pub fn is_negative_infinite(&self) -> bool {
+        self.sign == Sign::Minus && self.is_positive()
     }
 }

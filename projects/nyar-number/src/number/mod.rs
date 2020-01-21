@@ -1,7 +1,7 @@
-use crate::{NyarInteger, NyarRational, One, Zero};
+use crate::{NyarDecimal, NyarInteger, NyarRational, One, Zero};
 use num::{
-    bigint::{ParseBigIntError, Sign},
-    Num, Signed,
+    bigint::{ParseBigIntError,},
+    BigInt, BigUint, Num, Signed,
 };
 use shredder::Scan;
 use std::{
@@ -17,7 +17,7 @@ pub enum NyarNumber {
     /// A signed rational number
     Rational(NyarRational),
     /// A signed decimal number
-    Decimal(NyarInteger),
+    Decimal(NyarDecimal),
     Complex(NyarInteger),
 }
 

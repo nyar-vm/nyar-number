@@ -1,6 +1,22 @@
 use super::*;
-use crate::NyarNumber;
-use num::{BigInt, BigUint};
+use num::rational::ParseRatioError;
+
+impl Num for NyarRational {
+    type FromStrRadixErr = ParseRatioError;
+
+    fn from_str_radix(str: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
+        BigRational::from_str_radix(str, radix).map(|o| NyarRational::from(o))
+    }
+}
+
+impl FromStr for NyarRational {
+    type Err = ParseRatioError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        BigRational::from_str_radix(s, 10).map(|o| NyarRational::from(o))
+    }
+}
+
 impl From<BigRational> for NyarRational {
     fn from(value: BigRational) -> Self {
         let (num, den) = value.into();
@@ -10,18 +26,6 @@ impl From<BigRational> for NyarRational {
         NyarRational { sign, numerator: num.digits, denominator: den.digits }
     }
 }
-
-impl FromStr for NyarRational {
-    type Err = IntErrorKind;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match BigRational::from_str(s) {
-            Ok(o) => Ok(NyarRational::from(o)),
-            Err(_) => Err(IntErrorKind::InvalidDigit),
-        }
-    }
-}
-
 impl From<NyarInteger> for NyarRational {
     fn from(value: NyarInteger) -> Self {
         Self { sign: value.sign, numerator: value.digits, denominator: ONE.clone() }

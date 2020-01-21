@@ -9,5 +9,7 @@ mod unsigned;
 mod number;
 mod sign;
 
-pub use self::{integer::NyarInteger, number::NyarNumber, rational::NyarRational, unsigned::NyarUnsigned};
+pub use self::{
+    decimal::NyarDecimal, integer::NyarInteger, number::NyarNumber, rational::NyarRational, unsigned::NyarUnsigned,
+};
 pub use num::traits::{One, Zero};
