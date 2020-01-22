@@ -3,7 +3,7 @@ use super::*;
 impl Num for NyarNumber {
     type FromStrRadixErr = ();
 
-    fn from_str_radix(str: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
+    fn from_str_radix(_: &str, _: u32) -> Result<Self, Self::FromStrRadixErr> {
         todo!()
     }
 }

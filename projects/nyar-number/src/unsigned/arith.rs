@@ -1,10 +1,10 @@
 use super::*;
 
 impl NyarUnsigned {
-    fn zero() -> Gc<Self> {
+    pub fn zero() -> Gc<Self> {
         ZERO.clone()
     }
-    fn one() -> Gc<Self> {
+    pub fn one() -> Gc<Self> {
         ONE.clone()
     }
 }

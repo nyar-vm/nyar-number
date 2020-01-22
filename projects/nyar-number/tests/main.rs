@@ -1,10 +1,7 @@
 // use valkyrie_types::{testing::assert_type, ValkyrieID, ValkyrieInterface};
 
-use nyar_number::{NyarInteger, NyarNumber, NyarUnsigned, Zero};
-use std::{
-    ops::{Div, Mul},
-    str::FromStr,
-};
+use nyar_number::{NyarNumber, Zero};
+use std::ops::Div;
 
 #[test]
 fn ready() {
@@ -22,7 +19,7 @@ fn test_primitive() {
     println!("{i1}");
     println!("{i2:#?}");
     println!("{i2}");
-    let i3 = i1.div(i2);
+    let i3 = i1.div(a2);
     println!("{i3:#?}");
     println!("{i3}");
 }

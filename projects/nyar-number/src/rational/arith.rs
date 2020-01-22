@@ -54,6 +54,9 @@ impl Div for NyarRational {
     type Output = Self;
 
     fn div(self, rhs: Self) -> Self::Output {
+        if rhs.is_zero() {
+            return NyarRational::infinite(true).get().clone();
+        }
         self.delegate().div(rhs.delegate()).into()
     }
 }
