@@ -12,7 +12,11 @@ use std::{
 };
 
 mod arith;
+#[cfg(feature = "serde")]
+mod der;
 mod from;
+#[cfg(feature = "serde")]
+mod ser;
 
 pub(crate) static ZERO: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: BigUint::zero() }));
 pub(crate) static ONE: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: BigUint::one() }));

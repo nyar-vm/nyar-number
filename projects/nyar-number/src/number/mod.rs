@@ -1,8 +1,5 @@
 use crate::{NyarDecimal, NyarInteger, NyarRational, One, Zero};
-use num::{
-    bigint::{ParseBigIntError,},
-    BigInt, BigUint, Num, Signed,
-};
+use num::{bigint::ParseBigIntError, BigInt, BigUint, Num, Signed};
 use shredder::Scan;
 use std::{
     fmt::{Debug, Display, Formatter},
@@ -10,7 +7,11 @@ use std::{
 };
 
 mod arith;
+#[cfg(feature = "serde")]
+mod der;
 mod from;
+#[cfg(feature = "serde")]
+mod ser;
 
 #[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash, Scan)]
 pub enum NyarNumber {

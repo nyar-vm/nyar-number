@@ -12,7 +12,9 @@ use std::{
 };
 
 mod arith;
+mod der;
 mod from;
+mod ser;
 
 #[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarInteger {
