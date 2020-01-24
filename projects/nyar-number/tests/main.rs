@@ -1,8 +1,7 @@
 // use valkyrie_types::{testing::assert_type, ValkyrieID, ValkyrieInterface};
 
-use nyar_number::{NyarNumber, NyarUnsigned, Zero};
-use serde::Serialize;
-use shredder::Gc;
+use num::One;
+use nyar_number::{NyarInteger, NyarNumber, NyarUnsigned, Zero};
 use std::{collections::BTreeMap, ops::Div};
 
 #[test]
@@ -27,15 +26,32 @@ fn test_primitive() {
 }
 
 #[test]
-fn test_serde() {
-    let mut unsigned = BTreeMap::default();
-    unsigned.insert(0, NyarUnsigned::zero().get().clone());
-    unsigned.insert(1, NyarUnsigned::one().get().clone());
-    unsigned.insert(2, NyarUnsigned::from(u8::MAX));
-    unsigned.insert(3, NyarUnsigned::from(u16::MAX));
-    unsigned.insert(4, NyarUnsigned::from(u32::MAX));
-    unsigned.insert(5, NyarUnsigned::from(u64::MAX));
-    unsigned.insert(5, NyarUnsigned::from(u128::MAX));
-    let json = serde_json::to_string_pretty(&unsigned).expect("!");
-    println!("{}", json)
+fn test_serde_unsigned() {
+    let mut raw = BTreeMap::default();
+    raw.insert(0, NyarUnsigned::zero().get().clone());
+    raw.insert(1, NyarUnsigned::one().get().clone());
+    raw.insert(2, NyarUnsigned::from(u8::MAX));
+    raw.insert(3, NyarUnsigned::from(u16::MAX));
+    raw.insert(4, NyarUnsigned::from(u32::MAX));
+    raw.insert(5, NyarUnsigned::from(u64::MAX));
+    raw.insert(5, NyarUnsigned::from(u128::MAX));
+    let json = serde_json::to_string_pretty(&raw).expect("!");
+    println!("{}", json);
+    let map: BTreeMap<usize, NyarUnsigned> = serde_json::from_str(&json).expect("!");
+    println!("{:#?}", map)
+}
+#[test]
+fn test_serde_integer() {
+    let mut raw = BTreeMap::default();
+    raw.insert(0, NyarInteger::zero().clone());
+    raw.insert(1, NyarInteger::one().clone());
+    raw.insert(2, NyarInteger::from(i8::MIN));
+    raw.insert(3, NyarInteger::from(i16::MAX));
+    raw.insert(4, NyarInteger::from(i32::MIN));
+    raw.insert(5, NyarInteger::from(i64::MAX));
+    raw.insert(5, NyarInteger::from(i128::MIN));
+    let json = serde_json::to_string_pretty(&raw).expect("!");
+    println!("{}", json);
+    let map: BTreeMap<usize, NyarInteger> = serde_json::from_str(&json).expect("!");
+    println!("{:#?}", map)
 }

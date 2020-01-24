@@ -1,6 +1,6 @@
 [package]
 name = "nyar-number"
-version = "0.2.6"
+version = "0.2.7"
 authors = ["Aster <192607617@qq.com>"]
 description = "Numeric types with GC optimization"
 repository = "https://github.com/nyar-vm/nyar-prime"
@@ -22,5 +22,5 @@ serde_json = "1.0.107"
 
 [features]
 default = []
-serde = ["dep:serde", "num/serde", "bigdecimal/serde"]
+serde = ["dep:serde", "num/serde"]
 rand = ["dep:rand", "num/rand"]

@@ -12,11 +12,13 @@ use std::{
 };
 
 mod arith;
+#[cfg(feature = "serde")]
 mod der;
 mod from;
+#[cfg(feature = "serde")]
 mod ser;
 
-#[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarInteger {
     pub sign: Sign,
     pub digits: Gc<NyarUnsigned>,
@@ -37,6 +39,16 @@ unsafe impl Scan for NyarInteger {
 }
 
 unsafe impl GcDrop for NyarInteger {}
+
+impl Debug for NyarInteger {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("NyarInteger")
+            .field("sign", &self.sign)
+            .field("value", &self.digits.get().as_ref())
+            .field("pointer", &self.digits)
+            .finish()
+    }
+}
 
 impl Display for NyarInteger {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {

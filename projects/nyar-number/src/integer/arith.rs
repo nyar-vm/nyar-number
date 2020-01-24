@@ -14,7 +14,7 @@ impl Zero for NyarInteger {
 
 impl One for NyarInteger {
     fn one() -> Self {
-        Self { sign: Sign::NoSign, digits: ONE.clone() }
+        Self { sign: Sign::Plus, digits: ONE.clone() }
     }
 }
 

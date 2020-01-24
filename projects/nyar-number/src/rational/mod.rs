@@ -1,6 +1,11 @@
 mod arith;
 mod from;
 
+#[cfg(feature = "serde")]
+mod der;
+#[cfg(feature = "serde")]
+mod ser;
+
 use crate::{
     unsigned::{ONE, ZERO},
     NyarInteger, NyarUnsigned,

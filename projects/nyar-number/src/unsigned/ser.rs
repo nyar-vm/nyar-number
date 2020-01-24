@@ -1,12 +1,5 @@
 use crate::NyarUnsigned;
-use num::BigUint;
-use serde::{ser::SerializeStruct, Deserialize, Serialize, Serializer};
-
-#[derive(Serialize, Deserialize)]
-struct UnsignedWrap<'raw> {
-    r#type: &'static str,
-    value: &'raw BigUint,
-}
+use serde::{ser::SerializeStruct, Serialize, Serializer};
 
 impl Serialize for NyarUnsigned {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>

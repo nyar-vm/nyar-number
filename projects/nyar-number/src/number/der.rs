@@ -1,5 +1,4 @@
 use crate::NyarNumber;
-use num::BigUint;
 use serde::{Deserialize, Deserializer};
 
 impl<'de> Deserialize<'de> for NyarNumber {
@@ -7,6 +6,6 @@ impl<'de> Deserialize<'de> for NyarNumber {
     where
         D: Deserializer<'de>,
     {
-        todo!()
+      todo!()
     }
 }
