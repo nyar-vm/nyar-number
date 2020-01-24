@@ -1,4 +1,4 @@
-use crate::{NyarDecimal, NyarInteger, NyarUnsigned};
+use crate::NyarDecimal;
 use serde::{ser::SerializeStruct, Serialize, Serializer};
 
 impl Serialize for NyarDecimal {

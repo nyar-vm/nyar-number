@@ -1,5 +1,5 @@
 use super::*;
-
+use crate::utils::NyarNumberError;
 
 impl Num for NyarDecimal {
     type FromStrRadixErr = ParseBigDecimalError;
@@ -27,5 +27,21 @@ impl From<BigDecimal> for NyarDecimal {
         let (value, scale) = value.into_bigint_and_exponent();
         let (sign, digits) = value.into_parts();
         Self { sign, digits: Gc::new(NyarUnsigned { _repr: digits }), scale }
+    }
+}
+
+impl TryFrom<f32> for NyarDecimal {
+    type Error = NyarNumberError;
+
+    fn try_from(value: f32) -> Result<Self, Self::Error> {
+        Ok(NyarDecimal::from(BigDecimal::try_from(value)?))
+    }
+}
+
+impl TryFrom<f64> for NyarDecimal {
+    type Error = NyarNumberError;
+
+    fn try_from(value: f64) -> Result<Self, Self::Error> {
+        Ok(NyarDecimal::from(BigDecimal::try_from(value)?))
     }
 }

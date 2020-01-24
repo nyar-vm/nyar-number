@@ -1,7 +1,20 @@
-use num::{bigint::Sign, BigUint};
+use bigdecimal::ParseBigDecimalError;
+use num::{
+    bigint::{ParseBigIntError, Sign},
+    BigUint,
+};
 #[cfg(feature = "serde")]
 use serde::de::{MapAccess, Visitor};
-use std::fmt::Formatter;
+use std::{
+    error::Error,
+    fmt::{Display, Formatter},
+};
+mod errors;
+
+#[derive(Debug, Clone)]
+pub enum NyarNumberError {
+    ParseError(String),
+}
 
 pub struct RealVisitor {
     pub r#type: String,

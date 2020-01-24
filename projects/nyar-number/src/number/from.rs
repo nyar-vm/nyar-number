@@ -1,9 +1,12 @@
 use super::*;
 
 impl Num for NyarNumber {
-    type FromStrRadixErr = ();
+    type FromStrRadixErr = NyarNumberError;
 
-    fn from_str_radix(_: &str, _: u32) -> Result<Self, Self::FromStrRadixErr> {
+    fn from_str_radix(input: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
+        if input.contains('.') {
+            return Ok(Self::Decimal(NyarDecimal::from_str_radix(input, radix)?));
+        }
         todo!()
     }
 }
@@ -11,6 +14,21 @@ impl Num for NyarNumber {
 impl From<NyarRational> for NyarNumber {
     fn from(value: NyarRational) -> Self {
         Self::Rational(value)
+    }
+}
+
+impl TryFrom<f32> for NyarNumber {
+    type Error = NyarNumberError;
+
+    fn try_from(value: f32) -> Result<Self, Self::Error> {
+        Ok(Self::Decimal(NyarDecimal::try_from(value)?))
+    }
+}
+impl TryFrom<f64> for NyarNumber {
+    type Error = NyarNumberError;
+
+    fn try_from(value: f64) -> Result<Self, Self::Error> {
+        Ok(Self::Decimal(NyarDecimal::try_from(value)?))
     }
 }
 

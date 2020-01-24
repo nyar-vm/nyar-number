@@ -1,5 +1,5 @@
 use super::*;
-use num::bigint::ParseBigIntError;
+use crate::utils::NyarNumberError;
 
 impl FromStr for NyarInteger {
     type Err = IntErrorKind;
@@ -13,7 +13,7 @@ impl FromStr for NyarInteger {
 }
 
 impl Num for NyarInteger {
-    type FromStrRadixErr = ParseBigIntError;
+    type FromStrRadixErr = NyarNumberError;
 
     fn from_str_radix(str: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
         Ok(Self::from(BigInt::from_str_radix(str, radix)?))

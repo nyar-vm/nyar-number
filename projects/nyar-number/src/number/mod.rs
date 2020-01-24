@@ -1,5 +1,5 @@
-use crate::{NyarDecimal, NyarInteger, NyarRational, One, Zero};
-use num::{bigint::ParseBigIntError, BigInt, BigUint, Num, Signed};
+use crate::{utils::NyarNumberError, NyarDecimal, NyarInteger, NyarRational, One, Zero};
+use num::{BigInt, BigUint, Num, Signed};
 use shredder::Scan;
 use std::{
     fmt::{Debug, Display, Formatter},
@@ -33,11 +33,11 @@ impl Display for NyarNumber {
 }
 
 impl NyarNumber {
-    pub fn parse_integer(input: &str) -> Result<Self, ParseBigIntError> {
+    pub fn parse_integer(input: &str) -> Result<Self, NyarNumberError> {
         let int = NyarInteger::from_str_radix(input, 10)?;
         Ok(Self::Rational(NyarRational::from(int)))
     }
-    pub fn parse_integer_radix(input: &str, radix: u32) -> Result<Self, ParseBigIntError> {
+    pub fn parse_integer_radix(input: &str, radix: u32) -> Result<Self, NyarNumberError> {
         let int = NyarInteger::from_str_radix(input, radix)?;
         Ok(Self::Rational(NyarRational::from(int)))
     }

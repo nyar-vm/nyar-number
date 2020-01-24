@@ -1,4 +1,4 @@
-use crate::{NyarInteger, NyarRational, NyarUnsigned};
+use crate::NyarRational;
 use serde::{ser::SerializeStruct, Serialize, Serializer};
 
 impl Serialize for NyarRational {
