@@ -1,6 +1,6 @@
 use super::*;
 
-impl Num for NyarNumber {
+impl Num for NyarReal {
     type FromStrRadixErr = NyarNumberError;
 
     fn from_str_radix(input: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
@@ -11,20 +11,20 @@ impl Num for NyarNumber {
     }
 }
 
-impl From<NyarRational> for NyarNumber {
+impl From<NyarRational> for NyarReal {
     fn from(value: NyarRational) -> Self {
         Self::Rational(value)
     }
 }
 
-impl TryFrom<f32> for NyarNumber {
+impl TryFrom<f32> for NyarReal {
     type Error = NyarNumberError;
 
     fn try_from(value: f32) -> Result<Self, Self::Error> {
         Ok(Self::Decimal(NyarDecimal::try_from(value)?))
     }
 }
-impl TryFrom<f64> for NyarNumber {
+impl TryFrom<f64> for NyarReal {
     type Error = NyarNumberError;
 
     fn try_from(value: f64) -> Result<Self, Self::Error> {
@@ -34,7 +34,7 @@ impl TryFrom<f64> for NyarNumber {
 
 macro_rules! impl_integer {
     ($($ty:ty),*) => {$(
-        impl From<$ty> for NyarNumber {
+        impl From<$ty> for NyarReal {
             fn from(value: $ty) -> Self {
                 Self::Rational(NyarRational::from(value))
             }

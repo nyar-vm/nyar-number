@@ -21,6 +21,7 @@ mod ser;
 pub(crate) static ZERO: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: BigUint::zero() }));
 pub(crate) static ONE: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: BigUint::one() }));
 
+/// The underlying representation of all infinite-precision numbers
 #[derive(Clone, Default, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarUnsigned {
     pub(crate) _repr: BigUint,

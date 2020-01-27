@@ -86,6 +86,7 @@ impl NyarRational {
         BigRational::new(num, den)
     }
 
+    /// Construct infinity with sign bit
     pub fn infinite(positive: bool) -> Gc<Self> {
         match positive {
             true => POSITIVE_INFINITY.clone(),

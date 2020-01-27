@@ -1,12 +1,12 @@
 use super::*;
 
-impl One for NyarNumber {
+impl One for NyarReal {
     fn one() -> Self {
         Self::Rational(NyarRational::one())
     }
 }
 
-impl Zero for NyarNumber {
+impl Zero for NyarReal {
     fn zero() -> Self {
         Self::Rational(NyarRational::zero())
     }
@@ -15,24 +15,22 @@ impl Zero for NyarNumber {
         match self {
             Self::Rational(v) => v.is_zero(),
             Self::Decimal(v) => v.is_zero(),
-            Self::Complex(v) => v.is_zero(),
         }
     }
 }
 
-impl Neg for NyarNumber {
+impl Neg for NyarReal {
     type Output = Self;
 
     fn neg(self) -> Self::Output {
         match self {
             Self::Rational(v) => Self::Rational(v.neg()),
             Self::Decimal(v) => Self::Decimal(v.neg()),
-            Self::Complex(v) => Self::Complex(v.neg()),
         }
     }
 }
 
-impl Add for NyarNumber {
+impl Add for NyarReal {
     type Output = Self;
 
     fn add(self, other: Self) -> Self::Output {
@@ -40,24 +38,15 @@ impl Add for NyarNumber {
             Self::Rational(lhs) => match other {
                 Self::Rational(rhs) => Self::Rational(lhs.add(rhs)),
                 Self::Decimal(rhs) => Self::Decimal(NyarDecimal::from(lhs).add(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
             Self::Decimal(lhs) => match other {
                 Self::Rational(rhs) => Self::Decimal(lhs.add(NyarDecimal::from(rhs))),
                 Self::Decimal(rhs) => Self::Decimal(lhs.add(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
-            Self::Complex(_) => {
-                todo!()
-            }
         }
     }
 }
-impl Sub for NyarNumber {
+impl Sub for NyarReal {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self::Output {
@@ -65,25 +54,16 @@ impl Sub for NyarNumber {
             Self::Rational(lhs) => match rhs {
                 Self::Rational(rhs) => Self::Rational(lhs.sub(rhs)),
                 Self::Decimal(rhs) => Self::Decimal(NyarDecimal::from(lhs).sub(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
             Self::Decimal(lhs) => match rhs {
                 Self::Rational(rhs) => Self::Decimal(lhs.sub(NyarDecimal::from(rhs))),
                 Self::Decimal(rhs) => Self::Decimal(lhs.sub(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
-            Self::Complex(_) => {
-                todo!()
-            }
         }
     }
 }
 
-impl Mul for NyarNumber {
+impl Mul for NyarReal {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
@@ -91,25 +71,16 @@ impl Mul for NyarNumber {
             Self::Rational(lhs) => match rhs {
                 Self::Rational(rhs) => Self::Rational(lhs.mul(rhs)),
                 Self::Decimal(rhs) => Self::Decimal(NyarDecimal::from(lhs).mul(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
             Self::Decimal(lhs) => match rhs {
                 Self::Rational(rhs) => Self::Decimal(lhs.mul(NyarDecimal::from(rhs))),
                 Self::Decimal(rhs) => Self::Decimal(lhs.mul(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
-            Self::Complex(_) => {
-                todo!()
-            }
         }
     }
 }
 
-impl Div for NyarNumber {
+impl Div for NyarReal {
     type Output = Self;
 
     fn div(self, other: Self) -> Self::Output {
@@ -117,25 +88,16 @@ impl Div for NyarNumber {
             Self::Rational(lhs) => match other {
                 Self::Rational(rhs) => Self::Rational(lhs.div(rhs)),
                 Self::Decimal(rhs) => Self::Decimal(NyarDecimal::from(lhs).div(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
             Self::Decimal(lhs) => match other {
                 Self::Rational(rhs) => Self::Decimal(lhs.div(NyarDecimal::from(rhs))),
                 Self::Decimal(rhs) => Self::Decimal(lhs.div(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
-            Self::Complex(_) => {
-                todo!()
-            }
         }
     }
 }
 
-impl Rem for NyarNumber {
+impl Rem for NyarReal {
     type Output = Self;
 
     fn rem(self, rhs: Self) -> Self::Output {
@@ -143,27 +105,18 @@ impl Rem for NyarNumber {
             Self::Rational(lhs) => match rhs {
                 Self::Rational(rhs) => Self::Rational(lhs.rem(rhs)),
                 Self::Decimal(rhs) => Self::Decimal(NyarDecimal::from(lhs).rem(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
             Self::Decimal(lhs) => match rhs {
                 Self::Rational(rhs) => Self::Decimal(lhs.rem(NyarDecimal::from(rhs))),
                 Self::Decimal(rhs) => Self::Decimal(lhs.rem(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
-            Self::Complex(_) => {
-                todo!()
-            }
         }
     }
 }
 
 // impl NumOps for NyarNumber {}
 
-impl Signed for NyarNumber {
+impl Signed for NyarReal {
     fn abs(&self) -> Self {
         todo!()
     }
@@ -173,20 +126,11 @@ impl Signed for NyarNumber {
             Self::Rational(lhs) => match rhs {
                 Self::Rational(rhs) => Self::Rational(lhs.abs_sub(rhs)),
                 Self::Decimal(rhs) => Self::Decimal(NyarDecimal::from(lhs.clone()).abs_sub(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
             Self::Decimal(lhs) => match rhs {
                 Self::Rational(rhs) => Self::Decimal(lhs.abs_sub(&NyarDecimal::from(rhs.clone()))),
                 Self::Decimal(rhs) => Self::Decimal(lhs.abs_sub(rhs)),
-                Self::Complex(_) => {
-                    todo!()
-                }
             },
-            Self::Complex(_) => {
-                todo!()
-            }
         }
     }
 
@@ -194,7 +138,6 @@ impl Signed for NyarNumber {
         match self {
             Self::Rational(v) => Self::Rational(v.signum()),
             Self::Decimal(v) => Self::Decimal(v.signum()),
-            Self::Complex(v) => Self::Complex(v.signum()),
         }
     }
 
@@ -202,7 +145,6 @@ impl Signed for NyarNumber {
         match self {
             Self::Rational(v) => v.is_positive(),
             Self::Decimal(v) => v.is_positive(),
-            Self::Complex(v) => v.is_positive(),
         }
     }
 
@@ -210,7 +152,6 @@ impl Signed for NyarNumber {
         match self {
             Self::Rational(v) => v.is_negative(),
             Self::Decimal(v) => v.is_negative(),
-            Self::Complex(v) => v.is_negative(),
         }
     }
 }

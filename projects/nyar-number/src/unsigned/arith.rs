@@ -1,9 +1,11 @@
 use super::*;
 
 impl NyarUnsigned {
+    /// All addresses with a value of 0
     pub fn zero() -> Gc<Self> {
         ZERO.clone()
     }
+    /// All addresses with a value of 1
     pub fn one() -> Gc<Self> {
         ONE.clone()
     }

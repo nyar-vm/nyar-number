@@ -18,9 +18,12 @@ mod from;
 #[cfg(feature = "serde")]
 mod ser;
 
+/// An infinite-precision signed integer
 #[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarInteger {
+    /// Indicates the sign bit of this number
     pub sign: Sign,
+    /// Actual stored value
     pub digits: Gc<NyarUnsigned>,
 }
 

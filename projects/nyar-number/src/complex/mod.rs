@@ -1,6 +1,6 @@
 use crate::{
     unsigned::{ONE, ZERO},
-    NyarRational, NyarUnsigned, One, Zero,
+    NyarNumber, NyarRational, NyarReal, NyarUnsigned, One, Zero,
 };
 use bigdecimal::{BigDecimal, Num, ParseBigDecimalError};
 use num::{bigint::Sign, BigInt, FromPrimitive, Signed, ToPrimitive};
@@ -22,32 +22,27 @@ mod der;
 #[cfg(feature = "serde")]
 mod ser;
 
-/// A decimal fraction with dynamic precision
 #[derive(Debug, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
-pub struct NyarDecimal {
-    /// Indicates the sign bit of this number
-    pub sign: Sign,
-    /// Actual stored value
-    pub digits: Gc<NyarUnsigned>,
-    /// Decimal point position
-    pub scale: i64,
+pub struct NyarComplex {
+    pub re: NyarReal,
+    pub im: NyarReal,
 }
 
-impl Display for NyarDecimal {
+impl Display for NyarComplex {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         Display::fmt(&self.delegate(), f)
     }
 }
 
-unsafe impl GcSafe for NyarDecimal {}
-unsafe impl GcDrop for NyarDecimal {}
-unsafe impl Scan for NyarDecimal {
+unsafe impl GcSafe for NyarComplex {}
+unsafe impl GcDrop for NyarComplex {}
+unsafe impl Scan for NyarComplex {
     fn scan(&self, scanner: &mut Scanner<'_>) {
         scanner.scan(&self.digits)
     }
 }
 
-impl NyarDecimal {
+impl NyarComplex {
     pub(crate) fn delegate(&self) -> BigDecimal {
         let digits = BigInt::from_biguint(self.sign, self.digits.get()._repr.clone());
         BigDecimal::new(digits, self.scale)

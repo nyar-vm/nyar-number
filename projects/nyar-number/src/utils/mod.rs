@@ -11,8 +11,10 @@ use std::{
 };
 mod errors;
 
+/// A non-number appears in analysis or operation.
 #[derive(Debug, Clone)]
 pub enum NyarNumberError {
+    /// Cannot be resolved to the given type
     ParseError(String),
 }
 
