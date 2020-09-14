@@ -1,6 +1,8 @@
+use crate::NyarReal;
 use bigdecimal::ParseBigDecimalError;
 use num::{
     bigint::{ParseBigIntError, Sign},
+    rational::ParseRatioError,
     BigUint,
 };
 #[cfg(feature = "serde")]
@@ -9,6 +11,7 @@ use std::{
     error::Error,
     fmt::{Display, Formatter},
 };
+
 mod errors;
 
 /// A non-number appears in analysis or operation.
@@ -24,11 +27,13 @@ pub struct RealVisitor {
     pub value: Option<BigUint>,
     pub numerator: Option<BigUint>,
     pub denominator: Option<BigUint>,
+    pub re: Option<NyarReal>,
+    pub im: Option<NyarReal>,
 }
 
 impl Default for RealVisitor {
     fn default() -> Self {
-        Self { r#type: String::new(), sign: Sign::Plus, value: None, numerator: None, denominator: None }
+        Self { r#type: String::new(), sign: Sign::Plus, value: None, numerator: None, denominator: None, re: None, im: None }
     }
 }
 
@@ -60,6 +65,12 @@ impl<'de> Visitor<'de> for RealVisitor {
                 }
                 "denominator" => {
                     self.denominator = map.next_value()?;
+                }
+                "re" => {
+                    self.re = map.next_value()?;
+                }
+                "im" => {
+                    self.im = map.next_value()?;
                 }
                 _ => {
                     // drop

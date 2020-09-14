@@ -10,7 +10,7 @@ mod integer;
 mod number;
 mod rational;
 mod sign;
-// mod complex;
+mod complex;
 mod unsigned;
 pub(crate) mod utils;
 

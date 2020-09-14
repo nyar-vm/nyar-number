@@ -43,6 +43,12 @@ pub struct NyarRational {
     pub denominator: Gc<NyarUnsigned>,
 }
 
+impl Default for NyarRational {
+    fn default() -> Self {
+        Self { sign: Sign::NoSign, numerator: ZERO.clone(), denominator: ONE.clone() }
+    }
+}
+
 unsafe impl GcSafe for NyarRational {}
 
 unsafe impl Scan for NyarRational {

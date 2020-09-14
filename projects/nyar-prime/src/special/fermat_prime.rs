@@ -1,11 +1,8 @@
 //! http://mathworld.wolfram.com/FermatNumber.html
 
-use std::str::FromStr;
-
 use num::BigInt;
 
 use crate::auxiliary::power;
-use core::borrow::Borrow;
 
 /// A Fermat prime is the Fermat integer $F_n=2^{2^n}+1$ that is prime.
 pub struct FermatNumber {

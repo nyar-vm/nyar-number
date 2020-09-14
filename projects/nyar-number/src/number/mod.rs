@@ -22,6 +22,12 @@ pub enum NyarReal {
     Decimal(NyarDecimal),
 }
 
+impl Default for NyarReal {
+    fn default() -> Self {
+        Self::Rational(NyarRational::default())
+    }
+}
+
 impl Display for NyarReal {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {

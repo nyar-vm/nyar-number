@@ -7,7 +7,10 @@ impl Num for NyarReal {
         if input.contains('.') {
             return Ok(Self::Decimal(NyarDecimal::from_str_radix(input, radix)?));
         }
-        todo!()
+        if input.contains('/') {
+            return Ok(Self::Rational(NyarRational::from_str_radix(input, radix)?));
+        }
+        Ok(Self::Rational(BigInt::from_str_radix(input, radix)?.into()))
     }
 }
 

@@ -1,5 +1,6 @@
 use super::*;
 
+
 impl Error for NyarNumberError {}
 impl Display for NyarNumberError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -11,6 +12,11 @@ impl Display for NyarNumberError {
 
 impl From<ParseBigDecimalError> for NyarNumberError {
     fn from(value: ParseBigDecimalError) -> Self {
+        Self::ParseError(value.to_string())
+    }
+}
+impl From<ParseRatioError> for NyarNumberError {
+    fn from(value: ParseRatioError) -> Self {
         Self::ParseError(value.to_string())
     }
 }

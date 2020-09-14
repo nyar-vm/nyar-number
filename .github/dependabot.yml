@@ -1,7 +1,12 @@
 version: 2
 updates:
   - package-ecosystem: "cargo"
-    directory: "/"
+    directory: "/projects/nyar-number"
     schedule:
       interval: "weekly"
     target-branch: "dev"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "dev"
+    schedule:
+      interval: "daily"
