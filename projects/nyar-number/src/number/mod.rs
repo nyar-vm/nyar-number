@@ -4,6 +4,7 @@ use shredder::Scan;
 use std::{
     fmt::{Debug, Display, Formatter},
     ops::{Add, Div, Mul, Neg, Rem, Sub},
+    str::FromStr,
 };
 
 mod arith;

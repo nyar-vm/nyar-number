@@ -1,5 +1,13 @@
 use super::*;
 
+impl FromStr for NyarReal {
+    type Err = NyarNumberError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::from_str_radix(s, 10)
+    }
+}
+
 impl Num for NyarReal {
     type FromStrRadixErr = NyarNumberError;
 
@@ -41,8 +49,8 @@ macro_rules! impl_integer {
             fn from(value: $ty) -> Self {
                 Self::Rational(NyarRational::from(value))
             }
-            }
-        )*};
+        }
+    )*};
 }
 
 impl_integer![u8, u16, u32, u64, u128, usize, BigUint, &BigUint];
