@@ -1,19 +1,15 @@
 use super::*;
-use crate::utils::NyarNumberError;
 
 impl FromStr for NyarInteger {
-    type Err = IntErrorKind;
+    type Err = NyarError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match BigInt::from_str(s) {
-            Ok(o) => Ok(NyarInteger::from(o)),
-            Err(_) => Err(IntErrorKind::InvalidDigit),
-        }
+        Ok(BigInt::from_str(s)?.into())
     }
 }
 
 impl Num for NyarInteger {
-    type FromStrRadixErr = NyarNumberError;
+    type FromStrRadixErr = NyarError;
 
     fn from_str_radix(str: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
         Ok(Self::from(BigInt::from_str_radix(str, radix)?))

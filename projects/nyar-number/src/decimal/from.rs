@@ -1,19 +1,19 @@
 use super::*;
-use crate::utils::NyarNumberError;
+use nyar_error::{NyarError, SyntaxError};
 
 impl Num for NyarDecimal {
-    type FromStrRadixErr = ParseBigDecimalError;
+    type FromStrRadixErr = NyarError;
 
     fn from_str_radix(str: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
-        BigDecimal::from_str_radix(str, radix).map(|v| v.into())
+        Ok(BigDecimal::from_str_radix(str, radix)?.into())
     }
 }
 
 impl FromStr for NyarDecimal {
-    type Err = ParseBigDecimalError;
+    type Err = NyarError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        BigDecimal::from_str_radix(s, 10).map(|v| v.into())
+        Ok(BigDecimal::from_str_radix(s, 10)?.into())
     }
 }
 impl From<NyarRational> for NyarDecimal {
@@ -31,7 +31,7 @@ impl From<BigDecimal> for NyarDecimal {
 }
 
 impl TryFrom<f32> for NyarDecimal {
-    type Error = NyarNumberError;
+    type Error = NyarError;
 
     fn try_from(value: f32) -> Result<Self, Self::Error> {
         Ok(NyarDecimal::from(BigDecimal::try_from(value)?))
@@ -39,7 +39,7 @@ impl TryFrom<f32> for NyarDecimal {
 }
 
 impl TryFrom<f64> for NyarDecimal {
-    type Error = NyarNumberError;
+    type Error = NyarError;
 
     fn try_from(value: f64) -> Result<Self, Self::Error> {
         Ok(NyarDecimal::from(BigDecimal::try_from(value)?))

@@ -1,26 +1,11 @@
 use crate::NyarReal;
-use bigdecimal::ParseBigDecimalError;
-use num::{
-    bigint::{ParseBigIntError, Sign},
-    rational::ParseRatioError,
-    BigUint,
-};
+use num::{bigint::Sign, BigUint};
 #[cfg(feature = "serde")]
 use serde::de::{MapAccess, Visitor};
-use std::{
-    error::Error,
-    fmt::{Display, Formatter},
-};
-
-mod errors;
+use shredder::Scan;
+use std::fmt::{Debug, Display, Formatter, Pointer};
 
 /// A non-number appears in analysis or operation.
-#[derive(Debug, Clone)]
-pub enum NyarNumberError {
-    /// Cannot be resolved to the given type
-    ParseError(String),
-}
-
 pub struct RealVisitor {
     pub r#type: String,
     pub sign: Sign,

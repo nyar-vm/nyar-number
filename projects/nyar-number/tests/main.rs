@@ -34,7 +34,7 @@ fn test_serde_unsigned() {
     raw.insert(3, NyarUnsigned::from(u16::MAX));
     raw.insert(4, NyarUnsigned::from(u32::MAX));
     raw.insert(5, NyarUnsigned::from(u64::MAX));
-    raw.insert(5, NyarUnsigned::from(u128::MAX));
+    raw.insert(6, NyarUnsigned::from(u128::MAX));
     let json = serde_json::to_string_pretty(&raw).expect("!");
     println!("{}", json);
     let map: BTreeMap<usize, NyarUnsigned> = serde_json::from_str(&json).expect("!");
@@ -49,7 +49,7 @@ fn test_serde_integer() {
     raw.insert(3, NyarInteger::from(i16::MAX));
     raw.insert(4, NyarInteger::from(i32::MIN));
     raw.insert(5, NyarInteger::from(i64::MAX));
-    raw.insert(5, NyarInteger::from(i128::MIN));
+    raw.insert(6, NyarInteger::from(i128::MIN));
     let json = serde_json::to_string_pretty(&raw).expect("!");
     println!("{}", json);
     let map: BTreeMap<usize, NyarInteger> = serde_json::from_str(&json).expect("!");

@@ -1,5 +1,6 @@
 use crate::unsigned::NyarUnsigned;
 use num::{bigint::Sign, BigInt, BigUint, Num, One, Signed, ToPrimitive, Zero};
+use nyar_error::NyarError;
 use shredder::{
     marker::{GcDrop, GcSafe},
     Gc, Scan, Scanner,
@@ -10,6 +11,7 @@ use std::{
     ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
 };
+
 mod arith;
 #[cfg(feature = "serde")]
 mod der;
@@ -48,7 +50,7 @@ impl Debug for NyarInteger {
         f.debug_struct("NyarInteger")
             .field("sign", &self.sign)
             .field("value", &self.digits.get().as_ref())
-            .field("pointer", &self.digits)
+            .field("pointer", &format!("{:p}", self.digits))
             .finish()
     }
 }

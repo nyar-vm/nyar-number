@@ -1,12 +1,12 @@
-use crate::{utils::NyarNumberError, NyarDecimal, NyarInteger, NyarRational, One, Zero};
+use crate::{NyarDecimal, NyarInteger, NyarRational, One, Zero};
 use num::{BigInt, BigUint, Num, Signed};
+use nyar_error::NyarError;
 use shredder::Scan;
 use std::{
     fmt::{Debug, Display, Formatter},
     ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
 };
-
 mod arith;
 #[cfg(feature = "serde")]
 mod der;
@@ -53,7 +53,7 @@ impl NyarReal {
     /// ```
     /// // nothing
     /// ```
-    pub fn parse_integer(input: &str) -> Result<Self, NyarNumberError> {
+    pub fn parse_integer(input: &str) -> Result<Self, NyarError> {
         let int = NyarInteger::from_str_radix(input, 10)?;
         Ok(Self::Rational(NyarRational::from(int)))
     }
@@ -70,7 +70,7 @@ impl NyarReal {
     /// ```
     /// // nothing
     /// ```
-    pub fn parse_decimal(input: &str) -> Result<Self, NyarNumberError> {
+    pub fn parse_decimal(input: &str) -> Result<Self, NyarError> {
         Ok(Self::Decimal(NyarDecimal::from_str_radix(input, 10)?))
     }
     /// Parse string into decimal fraction
@@ -87,7 +87,7 @@ impl NyarReal {
     /// ```
     /// // nothing
     /// ```
-    pub fn parse_integer_radix(input: &str, radix: u32) -> Result<Self, NyarNumberError> {
+    pub fn parse_integer_radix(input: &str, radix: u32) -> Result<Self, NyarError> {
         let int = NyarInteger::from_str_radix(input, radix)?;
         Ok(Self::Rational(NyarRational::from(int)))
     }
@@ -105,7 +105,7 @@ impl NyarReal {
     /// ```
     /// // nothing
     /// ```
-    pub fn parse_decimal_radix(input: &str, radix: u32) -> Result<Self, NyarNumberError> {
+    pub fn parse_decimal_radix(input: &str, radix: u32) -> Result<Self, NyarError> {
         Ok(Self::Decimal(NyarDecimal::from_str_radix(input, radix)?))
     }
 }

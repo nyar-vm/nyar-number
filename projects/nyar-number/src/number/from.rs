@@ -1,7 +1,7 @@
 use super::*;
 
 impl FromStr for NyarReal {
-    type Err = NyarNumberError;
+    type Err = NyarError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Self::from_str_radix(s, 10)
@@ -9,7 +9,7 @@ impl FromStr for NyarReal {
 }
 
 impl Num for NyarReal {
-    type FromStrRadixErr = NyarNumberError;
+    type FromStrRadixErr = NyarError;
 
     fn from_str_radix(input: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
         if input.contains('.') {
@@ -29,14 +29,14 @@ impl From<NyarRational> for NyarReal {
 }
 
 impl TryFrom<f32> for NyarReal {
-    type Error = NyarNumberError;
+    type Error = NyarError;
 
     fn try_from(value: f32) -> Result<Self, Self::Error> {
         Ok(Self::Decimal(NyarDecimal::try_from(value)?))
     }
 }
 impl TryFrom<f64> for NyarReal {
-    type Error = NyarNumberError;
+    type Error = NyarError;
 
     fn try_from(value: f64) -> Result<Self, Self::Error> {
         Ok(Self::Decimal(NyarDecimal::try_from(value)?))

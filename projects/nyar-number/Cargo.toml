@@ -16,6 +16,11 @@ bigdecimal = "0.4.1"
 serde = { version = "1.0.188", optional = true, features = ["derive"] }
 rand = { version = "0.8.5", optional = true }
 
+[dependencies.nyar-error]
+version = "0.1.*"
+features = ["num", "bigdecimal"]
+path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-error'
+
 [dev-dependencies]
 serde_json = "1.0.107"
 
