@@ -5,12 +5,12 @@
 #![doc(html_favicon_url = "https://avatars.githubusercontent.com/u/91894079")]
 #![feature(lazy_cell)]
 
+mod complex;
 mod decimal;
 mod integer;
 mod number;
 mod rational;
 mod sign;
-mod complex;
 mod unsigned;
 pub(crate) mod utils;
 
@@ -18,4 +18,4 @@ pub use self::{
     decimal::NyarDecimal, integer::NyarInteger, number::NyarReal, rational::NyarRational, unsigned::NyarUnsigned,
     utils::NyarNumberError,
 };
-pub use num::traits::{One, Zero};
+pub use num::traits::{Num, One, ToPrimitive, Zero};

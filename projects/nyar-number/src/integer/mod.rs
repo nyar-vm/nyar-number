@@ -1,5 +1,5 @@
 use crate::unsigned::NyarUnsigned;
-use num::{bigint::Sign, BigInt, BigUint, Num, One, Signed, Zero};
+use num::{bigint::Sign, BigInt, BigUint, Num, One, Signed, ToPrimitive, Zero};
 use shredder::{
     marker::{GcDrop, GcSafe},
     Gc, Scan, Scanner,
@@ -10,11 +10,11 @@ use std::{
     ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
 };
-
 mod arith;
 #[cfg(feature = "serde")]
 mod der;
 mod from;
+mod into;
 #[cfg(feature = "serde")]
 mod ser;
 

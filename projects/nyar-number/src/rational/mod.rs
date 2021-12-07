@@ -1,16 +1,16 @@
 mod arith;
 mod from;
+mod into;
 
 #[cfg(feature = "serde")]
 mod der;
 #[cfg(feature = "serde")]
 mod ser;
-
 use crate::{
     unsigned::{ONE, ZERO},
     NyarInteger, NyarUnsigned,
 };
-use num::{bigint::Sign, BigInt, BigRational, BigUint, Num, One, Signed, Zero};
+use num::{bigint::Sign, BigInt, BigRational, BigUint, Num, One, Signed, ToPrimitive, Zero};
 use shredder::{
     marker::{GcDrop, GcSafe},
     Gc, Scan, Scanner,

@@ -16,6 +16,7 @@ use std::{
 
 mod arith;
 mod from;
+mod into;
 
 #[cfg(feature = "serde")]
 mod der;

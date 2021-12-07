@@ -11,6 +11,7 @@ mod arith;
 #[cfg(feature = "serde")]
 mod der;
 mod from;
+mod into;
 #[cfg(feature = "serde")]
 mod ser;
 

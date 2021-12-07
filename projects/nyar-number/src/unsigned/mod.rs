@@ -1,4 +1,4 @@
-use num::{BigUint, One, Zero};
+use num::{BigUint, One, ToPrimitive, Zero};
 use shredder::{
     marker::{GcDrop, GcSafe},
     Gc, Scan, Scanner,
@@ -15,6 +15,7 @@ mod arith;
 #[cfg(feature = "serde")]
 mod der;
 mod from;
+mod into;
 #[cfg(feature = "serde")]
 mod ser;
 
