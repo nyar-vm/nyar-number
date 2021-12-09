@@ -17,7 +17,7 @@ use shredder::{
 };
 use std::{
     clone::Clone,
-    fmt::{Display, Formatter, Write},
+    fmt::{Debug, Display, Formatter, Write},
     ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
     sync::LazyLock,
@@ -29,7 +29,7 @@ pub(crate) static NEGATIVE_INFINITY: LazyLock<Gc<NyarRational>> =
     LazyLock::new(|| Gc::new(NyarRational { sign: Sign::Minus, numerator: ONE.clone(), denominator: ZERO.clone() }));
 
 /// Infinite precision rational number type
-#[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarRational {
     /// Sign of rational numbers
     ///
@@ -85,10 +85,20 @@ impl Display for NyarRational {
     }
 }
 
+impl Debug for NyarRational {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Rational")
+            .field("sign", &self.sign)
+            .field("numerator", &self.numerator)
+            .field("denominator", &self.denominator)
+            .finish()
+    }
+}
+
 impl NyarRational {
     pub(crate) fn delegate(&self) -> BigRational {
-        let num = BigInt::from_biguint(self.sign, self.numerator.get()._repr.clone());
-        let den = BigInt::from_biguint(Sign::Plus, self.denominator.get()._repr.clone());
+        let num = BigInt::from_biguint(self.sign, self.numerator.get().delegate().clone());
+        let den = BigInt::from_biguint(Sign::Plus, self.denominator.get().delegate().clone());
         BigRational::new(num, den)
     }
 

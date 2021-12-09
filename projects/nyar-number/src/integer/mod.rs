@@ -7,7 +7,6 @@ use shredder::{
 };
 use std::{
     fmt::{Debug, Display, Formatter, Write},
-    num::IntErrorKind,
     ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
 };
@@ -47,11 +46,7 @@ unsafe impl GcDrop for NyarInteger {}
 
 impl Debug for NyarInteger {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("NyarInteger")
-            .field("sign", &self.sign)
-            .field("value", &self.digits.get().as_ref())
-            .field("pointer", &format!("{:p}", self.digits))
-            .finish()
+        f.debug_struct("NyarInteger").field("sign", &self.sign).field("value", &self.digits).finish()
     }
 }
 
@@ -74,6 +69,6 @@ impl NyarInteger {
     }
 
     pub(crate) fn wrapped(&self) -> BigInt {
-        BigInt::from_biguint(self.sign, self.digits.get()._repr.clone())
+        BigInt::from_biguint(self.sign, self.digits.get().delegate().clone())
     }
 }

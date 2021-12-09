@@ -9,8 +9,8 @@ impl Serialize for NyarRational {
         let mut ser = Serializer::serialize_struct(serializer, "Rational", 3)?;
         ser.serialize_field("type", "rational")?;
         ser.serialize_field("sign", &self.sign)?;
-        ser.serialize_field("numerator", &self.numerator.get()._repr)?;
-        ser.serialize_field("denominator", &self.denominator.get()._repr)?;
+        ser.serialize_field("numerator", &self.numerator.get().delegate())?;
+        ser.serialize_field("denominator", &self.denominator.get().delegate())?;
         ser.end()
     }
 }

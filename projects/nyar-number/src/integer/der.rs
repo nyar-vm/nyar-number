@@ -15,6 +15,6 @@ impl<'de> Deserialize<'de> for NyarInteger {
             // to warning
             Err(Error::invalid_type(Unexpected::Other(&real.r#type), &"type=integer"))?
         }
-        Ok(Self { sign: real.sign, digits: Gc::new(NyarUnsigned { _repr: real.value.unwrap_or_default() }) })
+        Ok(Self { sign: real.sign, digits: Gc::new(NyarUnsigned::from(real.value.unwrap_or_default())) })
     }
 }

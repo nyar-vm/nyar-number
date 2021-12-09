@@ -5,7 +5,7 @@ use shredder::{
 };
 use std::{
     fmt::{Debug, Display, Formatter},
-    num::IntErrorKind,
+    mem::transmute,
     ops::{Add, Mul},
     str::FromStr,
     sync::LazyLock,
@@ -19,13 +19,13 @@ mod into;
 #[cfg(feature = "serde")]
 mod ser;
 
-pub(crate) static ZERO: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: BigUint::zero() }));
-pub(crate) static ONE: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: BigUint::one() }));
+pub(crate) static ZERO: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: Gc::new(vec![]) }));
+pub(crate) static ONE: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: Gc::new(vec![1]) }));
 
 /// The underlying representation of all infinite-precision numbers
 #[derive(Clone, Default, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarUnsigned {
-    pub(crate) _repr: BigUint,
+    pub(crate) _repr: Gc<Vec<u64>>,
 }
 
 unsafe impl GcSafe for NyarUnsigned {}
@@ -40,12 +40,21 @@ unsafe impl GcDrop for NyarUnsigned {}
 
 impl Debug for NyarUnsigned {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        Debug::fmt(&self._repr, f)
+        let value = self.delegate();
+        write!(f, "{} ({:p})", value, self._repr)
     }
 }
 
 impl Display for NyarUnsigned {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        Display::fmt(&self._repr, f)
+        let value = self.delegate();
+        write!(f, "{}", value)
+    }
+}
+
+impl NyarUnsigned {
+    pub(crate) fn delegate(&self) -> BigUint {
+        let bytes = self._repr.get().clone();
+        unsafe { transmute::<Vec<u64>, BigUint>(bytes) }
     }
 }

@@ -2,8 +2,9 @@ use crate::{
     unsigned::{ONE, ZERO},
     NyarRational, NyarUnsigned, One, Zero,
 };
-use bigdecimal::{BigDecimal, Num, ParseBigDecimalError};
+use bigdecimal::{BigDecimal, Num};
 use num::{bigint::Sign, BigInt, FromPrimitive, Signed, ToPrimitive};
+use nyar_error::NyarError;
 use shredder::{
     marker::{GcDrop, GcSafe},
     Gc, Scan, Scanner,
@@ -50,7 +51,7 @@ unsafe impl Scan for NyarDecimal {
 
 impl NyarDecimal {
     pub(crate) fn delegate(&self) -> BigDecimal {
-        let digits = BigInt::from_biguint(self.sign, self.digits.get()._repr.clone());
+        let digits = BigInt::from_biguint(self.sign, self.digits.get().delegate());
         BigDecimal::new(digits, self.scale)
     }
 }

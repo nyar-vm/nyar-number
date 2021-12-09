@@ -8,7 +8,7 @@ impl Serialize for NyarUnsigned {
     {
         let mut ser = Serializer::serialize_struct(serializer, "Unsigned", 2)?;
         ser.serialize_field("type", "unsigned")?;
-        ser.serialize_field("value", &self._repr)?;
+        ser.serialize_field("value", &*self._repr.get())?;
         ser.end()
     }
 }

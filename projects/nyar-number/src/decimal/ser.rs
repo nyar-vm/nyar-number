@@ -9,7 +9,7 @@ impl Serialize for NyarDecimal {
         let mut ser = Serializer::serialize_struct(serializer, "Decimal", 3)?;
         ser.serialize_field("type", "decimal")?;
         ser.serialize_field("sign", &self.sign)?;
-        ser.serialize_field("value", &self.digits.get()._repr)?;
+        ser.serialize_field("value", &*self.digits.get())?;
         ser.end()
     }
 }

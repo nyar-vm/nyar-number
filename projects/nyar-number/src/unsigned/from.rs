@@ -1,49 +1,30 @@
 use super::*;
+use nyar_error::NyarError;
 
 impl FromStr for NyarUnsigned {
-    type Err = IntErrorKind;
+    type Err = NyarError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match BigUint::from_str(s) {
-            Ok(o) => Ok(Self { _repr: o }),
-            Err(_) => Err(IntErrorKind::InvalidDigit),
-        }
+        Ok(BigUint::from_str(s)?.into())
     }
 }
 
-impl From<u8> for NyarUnsigned {
-    fn from(value: u8) -> Self {
-        Self { _repr: BigUint::from(value) }
-    }
+macro_rules! from_unsigned {
+    ($($t:ty),*) => {
+        $(
+            impl From<$t> for NyarUnsigned {
+                fn from(value: $t) -> Self {
+                    Self::from(BigUint::from(value))
+                }
+            }
+        )*
+    };
 }
 
-impl From<u16> for NyarUnsigned {
-    fn from(value: u16) -> Self {
-        Self { _repr: BigUint::from(value) }
-    }
-}
-impl From<u32> for NyarUnsigned {
-    fn from(value: u32) -> Self {
-        Self { _repr: BigUint::from(value) }
-    }
-}
-impl From<u64> for NyarUnsigned {
-    fn from(value: u64) -> Self {
-        Self { _repr: BigUint::from(value) }
-    }
-}
-impl From<u128> for NyarUnsigned {
-    fn from(value: u128) -> Self {
-        Self { _repr: BigUint::from(value) }
-    }
-}
-impl From<usize> for NyarUnsigned {
-    fn from(value: usize) -> Self {
-        Self { _repr: BigUint::from(value) }
-    }
-}
+from_unsigned![u8, u16, u32, u64, u128, usize];
+
 impl From<BigUint> for NyarUnsigned {
     fn from(value: BigUint) -> Self {
-        Self { _repr: value }
+        unsafe { Self { _repr: Gc::new(transmute::<BigUint, Vec<u64>>(value)) } }
     }
 }

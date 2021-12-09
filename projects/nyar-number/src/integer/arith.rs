@@ -73,8 +73,8 @@ impl Mul for NyarInteger {
             return Self { sign, digits: self.digits.clone() };
         }
         else {
-            let value = self.digits.get().clone()._repr.mul(rhs.digits.get().clone()._repr);
-            Self { sign, digits: Gc::new(NyarUnsigned { _repr: value }) }
+            let value = self.digits.get().delegate().mul(rhs.digits.get().delegate());
+            Self { sign, digits: Gc::new(NyarUnsigned::from(value)) }
         }
     }
 }
@@ -153,19 +153,19 @@ impl Integer for NyarInteger {
     }
 
     fn divides(&self, other: &Self) -> bool {
-        self.digits.get()._repr.is_multiple_of(&other.digits.get()._repr)
+        self.digits.get().delegate().is_multiple_of(&other.digits.get().delegate())
     }
 
     fn is_multiple_of(&self, other: &Self) -> bool {
-        self.digits.get()._repr.is_multiple_of(&other.digits.get()._repr)
+        self.digits.get().delegate().is_multiple_of(&other.digits.get().delegate())
     }
 
     fn is_even(&self) -> bool {
-        self.digits.get()._repr.is_even()
+        self.digits.get().delegate().is_even()
     }
 
     fn is_odd(&self) -> bool {
-        self.digits.get()._repr.is_odd()
+        self.digits.get().delegate().is_odd()
     }
 
     fn div_rem(&self, other: &Self) -> (Self, Self) {

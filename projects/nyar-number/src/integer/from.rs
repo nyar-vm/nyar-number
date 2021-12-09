@@ -83,24 +83,24 @@ impl From<isize> for NyarInteger {
 }
 impl From<BigUint> for NyarInteger {
     fn from(value: BigUint) -> Self {
-        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned { _repr: value }) }
+        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned::from(value)) }
     }
 }
 impl From<&BigUint> for NyarInteger {
     fn from(value: &BigUint) -> Self {
-        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned { _repr: value.clone() }) }
+        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned::from(value.clone())) }
     }
 }
 
 impl From<BigInt> for NyarInteger {
     fn from(value: BigInt) -> Self {
         let (lhs, rhs) = value.into_parts();
-        Self { sign: lhs, digits: Gc::new(NyarUnsigned { _repr: rhs }) }
+        Self { sign: lhs, digits: Gc::new(NyarUnsigned::from(rhs)) }
     }
 }
 impl From<&BigInt> for NyarInteger {
     fn from(value: &BigInt) -> Self {
         let (lhs, rhs) = value.clone().into_parts();
-        Self { sign: lhs, digits: Gc::new(NyarUnsigned { _repr: rhs }) }
+        Self { sign: lhs, digits: Gc::new(NyarUnsigned::from(rhs)) }
     }
 }

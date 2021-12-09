@@ -17,13 +17,13 @@ impl Zero for NyarUnsigned {
     }
 
     fn is_zero(&self) -> bool {
-        self._repr.is_zero()
+        self._repr.get().is_empty()
     }
 }
 
 impl One for NyarUnsigned {
     fn one() -> Self {
-        Self { _repr: BigUint::one() }
+        Self { _repr: Gc::new(vec![1]) }
     }
 }
 
@@ -31,7 +31,7 @@ impl Add for NyarUnsigned {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self::Output {
-        Self { _repr: self._repr.add(rhs._repr) }
+        self.delegate().add(rhs.delegate()).into()
     }
 }
 
@@ -39,6 +39,6 @@ impl Mul for NyarUnsigned {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
-        Self { _repr: self._repr.mul(rhs._repr) }
+        self.delegate().mul(rhs.delegate()).into()
     }
 }

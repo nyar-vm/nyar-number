@@ -16,7 +16,7 @@ mod into;
 mod ser;
 
 /// A real number, which can be a fraction with infinite precision or a decimal with dynamic progress
-#[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash, Scan)]
+#[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash, Scan)]
 pub enum NyarReal {
     /// A signed rational number
     Rational(NyarRational),
@@ -33,12 +33,19 @@ impl Default for NyarReal {
 impl Display for NyarReal {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            NyarReal::Rational(v) => Display::fmt(v, f),
-            NyarReal::Decimal(v) => Display::fmt(v, f),
+            Self::Rational(v) => Display::fmt(v, f),
+            Self::Decimal(v) => Display::fmt(v, f),
         }
     }
 }
-
+impl Debug for NyarReal {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Rational(v) => Debug::fmt(v, f),
+            Self::Decimal(v) => Debug::fmt(v, f),
+        }
+    }
+}
 impl NyarReal {
     /// Parse string into decimal integer
     ///

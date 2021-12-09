@@ -9,7 +9,7 @@ impl Serialize for NyarInteger {
         let mut ser = Serializer::serialize_struct(serializer, "Integer", 3)?;
         ser.serialize_field("type", "integer")?;
         ser.serialize_field("sign", &self.sign)?;
-        ser.serialize_field("value", &self.digits.get()._repr)?;
+        ser.serialize_field("value", &self.digits.get().delegate())?;
         ser.end()
     }
 }

@@ -2,8 +2,7 @@ use crate::NyarReal;
 use num::{bigint::Sign, BigUint};
 #[cfg(feature = "serde")]
 use serde::de::{MapAccess, Visitor};
-use shredder::Scan;
-use std::fmt::{Debug, Display, Formatter, Pointer};
+use std::fmt::{ Formatter};
 
 /// A non-number appears in analysis or operation.
 pub struct RealVisitor {
