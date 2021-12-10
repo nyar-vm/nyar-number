@@ -9,19 +9,36 @@ impl FromStr for NyarDigits {
     }
 }
 
-macro_rules! from_unsigned {
-    ($($t:ty),*) => {
-        $(
-            impl From<$t> for NyarDigits {
-                fn from(value: $t) -> Self {
-                    Self::from(BigUint::from(value))
-                }
-            }
-        )*
-    };
+impl From<u8> for NyarDigits {
+    fn from(value: u8) -> Self {
+        Self::from(value as u64)
+    }
 }
-
-from_unsigned![u8, u16, u32, u64, u128, usize];
+impl From<u16> for NyarDigits {
+    fn from(value: u16) -> Self {
+        Self::from(value as u64)
+    }
+}
+impl From<u32> for NyarDigits {
+    fn from(value: u32) -> Self {
+        Self::from(value as u64)
+    }
+}
+impl From<u64> for NyarDigits {
+    fn from(value: u64) -> Self {
+        Self { _repr: Gc::new(vec![value]) }
+    }
+}
+impl From<u128> for NyarDigits {
+    fn from(value: u128) -> Self {
+        Self::from(BigUint::from(value))
+    }
+}
+impl From<usize> for NyarDigits {
+    fn from(value: usize) -> Self {
+        Self::from(value as u64)
+    }
+}
 
 impl From<BigUint> for NyarDigits {
     fn from(value: BigUint) -> Self {

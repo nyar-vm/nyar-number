@@ -28,7 +28,7 @@ impl From<BigRational> for NyarRational {
 }
 impl From<NyarInteger> for NyarRational {
     fn from(value: NyarInteger) -> Self {
-        Self { sign: value.sign, numerator: value.digits, denominator: ONE.clone() }
+        Self { sign: value.sign, numerator: value.digits, denominator: NyarDigits::one() }
     }
 }
 

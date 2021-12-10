@@ -2,7 +2,7 @@ use super::*;
 
 impl Zero for NyarDecimal {
     fn zero() -> Self {
-        Self { sign: Sign::Plus, digits: ZERO.clone(), scale: 0 }
+        Self { sign: Sign::Plus, digits: NyarDigits::zero(), scale: 0 }
     }
 
     fn is_zero(&self) -> bool {
@@ -11,7 +11,7 @@ impl Zero for NyarDecimal {
 }
 impl One for NyarDecimal {
     fn one() -> Self {
-        Self { sign: Sign::Plus, digits: ONE.clone(), scale: 0 }
+        Self { sign: Sign::Plus, digits: NyarDigits::one(), scale: 0 }
     }
 }
 
@@ -76,10 +76,10 @@ impl Signed for NyarDecimal {
     }
 
     fn is_positive(&self) -> bool {
-        self.sign == Sign::Plus
+        matches!(self.sign, Sign::Plus)
     }
 
     fn is_negative(&self) -> bool {
-        self.sign == Sign::Minus
+        matches!(self.sign, Sign::Minus)
     }
 }

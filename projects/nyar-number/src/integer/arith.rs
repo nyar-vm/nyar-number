@@ -15,6 +15,12 @@ impl One for NyarInteger {
     fn one() -> Self {
         Self { sign: Sign::Plus, digits: NyarDigits::one() }
     }
+    fn is_one(&self) -> bool
+    where
+        Self: PartialEq,
+    {
+        self.sign == Sign::Plus && self.digits.is_one()
+    }
 }
 
 impl Neg for NyarInteger {
@@ -34,7 +40,7 @@ impl Add for NyarInteger {
             (_, Sign::NoSign) => self,
             (Sign::NoSign, _) => other,
             // non reusable path
-            _ => self.wrapped().add(other.wrapped()).into(),
+            _ => self.delegate().add(other.delegate()).into(),
         }
     }
 }
@@ -47,7 +53,7 @@ impl Sub for NyarInteger {
             (_, Sign::NoSign) => self,
             (Sign::NoSign, _) => -other,
             // non reusable path
-            _ => self.wrapped().sub(other.wrapped()).into(),
+            _ => self.delegate().sub(other.delegate()).into(),
         }
     }
 }
@@ -89,7 +95,7 @@ impl Div for NyarInteger {
             return Self { sign: -self.sign, digits: self.digits.clone() };
         }
         else {
-            self.wrapped().div(rhs.wrapped()).into()
+            self.delegate().div(rhs.delegate()).into()
         }
     }
 }
@@ -98,7 +104,7 @@ impl Rem for NyarInteger {
     type Output = Self;
 
     fn rem(self, rhs: Self) -> Self::Output {
-        self.wrapped().rem(rhs.wrapped()).into()
+        self.delegate().rem(rhs.delegate()).into()
     }
 }
 
@@ -110,7 +116,7 @@ impl Signed for NyarInteger {
     }
 
     fn abs_sub(&self, other: &Self) -> Self {
-        self.wrapped().abs_sub(&other.wrapped()).into()
+        self.delegate().abs_sub(&other.delegate()).into()
     }
 
     fn signum(&self) -> Self {
@@ -136,19 +142,19 @@ impl Signed for NyarInteger {
 
 impl Integer for NyarInteger {
     fn div_floor(&self, other: &Self) -> Self {
-        self.wrapped().div_floor(&other.wrapped()).into()
+        self.delegate().div_floor(&other.delegate()).into()
     }
 
     fn mod_floor(&self, other: &Self) -> Self {
-        self.wrapped().mod_floor(&other.wrapped()).into()
+        self.delegate().mod_floor(&other.delegate()).into()
     }
 
     fn gcd(&self, other: &Self) -> Self {
-        self.wrapped().gcd(&other.wrapped()).into()
+        self.delegate().gcd(&other.delegate()).into()
     }
 
     fn lcm(&self, other: &Self) -> Self {
-        self.wrapped().lcm(&other.wrapped()).into()
+        self.delegate().lcm(&other.delegate()).into()
     }
 
     fn divides(&self, other: &Self) -> bool {
@@ -168,7 +174,7 @@ impl Integer for NyarInteger {
     }
 
     fn div_rem(&self, other: &Self) -> (Self, Self) {
-        let (a, b) = self.wrapped().div_rem(&other.wrapped());
+        let (a, b) = self.delegate().div_rem(&other.delegate());
         (a.into(), b.into())
     }
 }

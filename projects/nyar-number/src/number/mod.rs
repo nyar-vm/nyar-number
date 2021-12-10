@@ -1,12 +1,13 @@
 use crate::{NyarDecimal, NyarInteger, NyarRational, One, Zero};
-use num::{BigInt, BigUint, Num, Signed};
+use num::{bigint::Sign, BigInt, BigUint, Num, Signed};
 use nyar_error::NyarError;
-use shredder::Scan;
+use shredder::{marker::GcSafe, Scan, Scanner};
 use std::{
     fmt::{Debug, Display, Formatter},
     ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
 };
+
 mod arith;
 #[cfg(feature = "serde")]
 mod der;
@@ -16,12 +17,27 @@ mod into;
 mod ser;
 
 /// A real number, which can be a fraction with infinite precision or a decimal with dynamic progress
-#[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash, Scan)]
+#[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub enum NyarReal {
+    Indefinite,
+    Infinity(Sign),
     /// A signed rational number
     Rational(NyarRational),
     /// A signed decimal number
     Decimal(NyarDecimal),
+}
+
+unsafe impl GcSafe for NyarReal {}
+
+unsafe impl Scan for NyarReal {
+    fn scan(&self, scanner: &mut Scanner<'_>) {
+        match self {
+            NyarReal::Indefinite => {}
+            NyarReal::Infinity { .. } => {}
+            NyarReal::Rational(v) => v.scan(scanner),
+            NyarReal::Decimal(v) => v.scan(scanner),
+        }
+    }
 }
 
 impl Default for NyarReal {
@@ -35,6 +51,12 @@ impl Display for NyarReal {
         match self {
             Self::Rational(v) => Display::fmt(v, f),
             Self::Decimal(v) => Display::fmt(v, f),
+            Self::Indefinite => {
+                todo!()
+            }
+            Self::Infinity { .. } => {
+                todo!()
+            }
         }
     }
 }
@@ -43,6 +65,12 @@ impl Debug for NyarReal {
         match self {
             Self::Rational(v) => Debug::fmt(v, f),
             Self::Decimal(v) => Debug::fmt(v, f),
+            Self::Indefinite => {
+                todo!()
+            }
+            Self::Infinity { .. } => {
+                todo!()
+            }
         }
     }
 }

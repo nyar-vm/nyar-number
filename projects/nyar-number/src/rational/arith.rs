@@ -1,19 +1,18 @@
 use super::*;
-use crate::unsigned::ZERO;
 
 impl Zero for NyarRational {
     fn zero() -> Self {
-        Self { sign: Sign::Plus, numerator: ZERO.clone(), denominator: ONE.clone() }
+        Self { sign: Sign::Plus, numerator: NyarDigits::zero(), denominator: NyarDigits::one() }
     }
 
     fn is_zero(&self) -> bool {
-        self.numerator.get().is_zero()
+        self.numerator.is_zero()
     }
 }
 
 impl One for NyarRational {
     fn one() -> Self {
-        Self { sign: Sign::Plus, numerator: ONE.clone(), denominator: ONE.clone() }
+        Self { sign: Sign::Plus, numerator: NyarDigits::one(), denominator: NyarDigits::one() }
     }
 }
 impl Neg for NyarRational {
@@ -50,13 +49,16 @@ impl Mul for NyarRational {
     }
 }
 
+impl CheckedDiv for NyarRational {
+    fn checked_div(&self, _: &Self) -> Option<Self> {
+        todo!()
+    }
+}
+
 impl Div for NyarRational {
     type Output = Self;
 
     fn div(self, rhs: Self) -> Self::Output {
-        if rhs.is_zero() {
-            return NyarRational::infinite(true).get().clone();
-        }
         self.delegate().div(rhs.delegate()).into()
     }
 }
@@ -83,10 +85,10 @@ impl Signed for NyarRational {
     }
 
     fn is_positive(&self) -> bool {
-        todo!()
+        matches!(self.sign, Sign::Plus)
     }
 
     fn is_negative(&self) -> bool {
-        todo!()
+        matches!(self.sign, Sign::Minus)
     }
 }

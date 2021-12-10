@@ -14,6 +14,6 @@ mod sign;
 mod unsigned;
 pub(crate) mod utils;
 
-pub use self::{decimal::NyarDecimal, integer::NyarInteger, number::NyarReal, rational::NyarRational, unsigned::NyarUnsigned};
+pub use self::{decimal::NyarDecimal, integer::NyarInteger, number::NyarReal, rational::NyarRational, unsigned::NyarDigits};
 pub use num::traits::{Num, One, ToPrimitive, Zero};
 pub use nyar_error::NyarError;

@@ -3,7 +3,6 @@ use serde::{
     de::{Error, Unexpected},
     Deserialize, Deserializer,
 };
-use shredder::Gc;
 
 impl<'de> Deserialize<'de> for NyarInteger {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
@@ -15,6 +14,6 @@ impl<'de> Deserialize<'de> for NyarInteger {
             // to warning
             Err(Error::invalid_type(Unexpected::Other(&real.r#type), &"type=integer"))?
         }
-        Ok(Self { sign: real.sign, digits: NyarDigits::from(real.value.unwrap_or_default()) })
+        Ok(Self { sign: real.sign, digits: NyarDigits::new(real.digits) })
     }
 }

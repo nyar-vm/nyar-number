@@ -28,8 +28,8 @@ pub struct NyarDigits {
 unsafe impl GcSafe for NyarDigits {}
 
 unsafe impl Scan for NyarDigits {
-    fn scan(&self, _: &mut Scanner<'_>) {
-        // no gc item inside
+    fn scan(&self, scanner: &mut Scanner<'_>) {
+        self._repr.scan(scanner)
     }
 }
 
@@ -50,6 +50,13 @@ impl Display for NyarDigits {
 }
 
 impl NyarDigits {
+    /// Create new unsigned from digits
+    pub fn new(v: Vec<u64>) -> Self {
+        if v.is_empty() {
+            return Self::zero();
+        }
+        Self { _repr: Gc::new(v) }
+    }
     pub(crate) fn delegate(&self) -> BigUint {
         let bytes = self._repr.get().clone();
         unsafe { transmute::<Vec<u64>, BigUint>(bytes) }

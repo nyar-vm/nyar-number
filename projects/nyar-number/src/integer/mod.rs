@@ -3,7 +3,7 @@ use num::{bigint::Sign, BigInt, BigUint, Num, One, Signed, ToPrimitive, Zero};
 use nyar_error::NyarError;
 use shredder::{
     marker::{GcDrop, GcSafe},
-    Gc, Scan, Scanner,
+    Scan, Scanner,
 };
 use std::{
     fmt::{Debug, Display, Formatter, Write},
@@ -68,7 +68,7 @@ impl NyarInteger {
         Self { sign, digits: value.into() }
     }
 
-    pub(crate) fn wrapped(&self) -> BigInt {
+    pub(crate) fn delegate(&self) -> BigInt {
         BigInt::from_biguint(self.sign, self.digits.delegate())
     }
 }

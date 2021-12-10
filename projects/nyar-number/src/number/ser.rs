@@ -9,6 +9,8 @@ impl Serialize for NyarReal {
         match self {
             NyarReal::Rational(v) => v.serialize(serializer),
             NyarReal::Decimal(v) => v.serialize(serializer),
+            NyarReal::Indefinite => serializer.serialize_str("Indefinite"),
+            NyarReal::Infinity(_) => serializer.serialize_str("Infinity"),
         }
     }
 }

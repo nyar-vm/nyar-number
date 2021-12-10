@@ -1,13 +1,10 @@
-use crate::{
-    unsigned::{ONE, ZERO},
-    NyarRational, NyarUnsigned, One, Zero,
-};
+use crate::{NyarDigits, NyarRational, One, Zero};
 use bigdecimal::{BigDecimal, Num};
 use num::{bigint::Sign, BigInt, FromPrimitive, Signed, ToPrimitive};
 use nyar_error::NyarError;
 use shredder::{
     marker::{GcDrop, GcSafe},
-    Gc, Scan, Scanner,
+    Scan, Scanner,
 };
 use std::{
     fmt::{Debug, Display, Formatter},
@@ -30,7 +27,7 @@ pub struct NyarDecimal {
     /// Indicates the sign bit of this number
     pub sign: Sign,
     /// Actual stored value
-    pub digits: Gc<NyarUnsigned>,
+    pub digits: NyarDigits,
     /// Decimal point position
     pub scale: i64,
 }
@@ -51,7 +48,7 @@ unsafe impl Scan for NyarDecimal {
 
 impl NyarDecimal {
     pub(crate) fn delegate(&self) -> BigDecimal {
-        let digits = BigInt::from_biguint(self.sign, self.digits.get().delegate());
+        let digits = BigInt::from_biguint(self.sign, self.digits.delegate());
         BigDecimal::new(digits, self.scale)
     }
 }

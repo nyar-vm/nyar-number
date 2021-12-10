@@ -6,14 +6,16 @@ impl ToPrimitive for NyarReal {
     fn to_isize(&self) -> Option<isize> {
         match self {
             NyarReal::Rational(v) => {
-                if v.denominator.get().is_one() {
-                    v.numerator.get().to_isize()
+                if v.denominator.is_one() {
+                    v.numerator.to_isize()
                 }
                 else {
                     None
                 }
             }
             NyarReal::Decimal(_) => None,
+            NyarReal::Indefinite => None,
+            NyarReal::Infinity(_) => None,
         }
     }
 
@@ -40,14 +42,16 @@ impl ToPrimitive for NyarReal {
     fn to_usize(&self) -> Option<usize> {
         match self {
             NyarReal::Rational(v) => {
-                if v.denominator.get().is_one() {
-                    v.numerator.get().to_usize()
+                if v.denominator.is_one() {
+                    v.numerator.to_usize()
                 }
                 else {
                     None
                 }
             }
             NyarReal::Decimal(_) => None,
+            NyarReal::Indefinite => None,
+            NyarReal::Infinity(_) => None,
         }
     }
 
@@ -75,6 +79,8 @@ impl ToPrimitive for NyarReal {
         match self {
             NyarReal::Rational(v) => v.to_f32(),
             NyarReal::Decimal(v) => v.to_f32(),
+            NyarReal::Indefinite => Some(f32::NAN),
+            NyarReal::Infinity(_) => Some(f32::INFINITY),
         }
     }
 
@@ -82,6 +88,8 @@ impl ToPrimitive for NyarReal {
         match self {
             NyarReal::Rational(v) => v.to_f64(),
             NyarReal::Decimal(v) => v.to_f64(),
+            NyarReal::Indefinite => Some(f64::NAN),
+            NyarReal::Infinity(_) => Some(f64::INFINITY),
         }
     }
 }

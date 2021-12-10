@@ -25,7 +25,7 @@ impl From<BigDecimal> for NyarDecimal {
     fn from(value: BigDecimal) -> Self {
         let (value, scale) = value.into_bigint_and_exponent();
         let (sign, digits) = value.into_parts();
-        Self { sign, digits: Gc::new(NyarUnsigned::from(digits)), scale }
+        Self { sign, digits: NyarDigits::from(digits), scale }
     }
 }
 

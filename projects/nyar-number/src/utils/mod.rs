@@ -2,13 +2,13 @@ use crate::NyarReal;
 use num::{bigint::Sign, BigUint};
 #[cfg(feature = "serde")]
 use serde::de::{MapAccess, Visitor};
-use std::fmt::{ Formatter};
+use std::fmt::Formatter;
 
 /// A non-number appears in analysis or operation.
 pub struct RealVisitor {
     pub r#type: String,
     pub sign: Sign,
-    pub value: Option<BigUint>,
+    pub digits: Vec<u64>,
     pub numerator: Option<BigUint>,
     pub denominator: Option<BigUint>,
     pub re: Option<NyarReal>,
@@ -17,7 +17,7 @@ pub struct RealVisitor {
 
 impl Default for RealVisitor {
     fn default() -> Self {
-        Self { r#type: String::new(), sign: Sign::Plus, value: None, numerator: None, denominator: None, re: None, im: None }
+        Self { r#type: String::new(), sign: Sign::Plus, digits: vec![], numerator: None, denominator: None, re: None, im: None }
     }
 }
 
@@ -29,6 +29,7 @@ impl<'de> Visitor<'de> for RealVisitor {
         // never fail
         formatter.write_str("")
     }
+
     fn visit_map<A>(mut self, mut map: A) -> Result<Self::Value, A::Error>
     where
         A: MapAccess<'de>,
@@ -42,7 +43,7 @@ impl<'de> Visitor<'de> for RealVisitor {
                     self.sign = map.next_value()?;
                 }
                 "value" => {
-                    self.value = map.next_value()?;
+                    self.digits = map.next_value()?;
                 }
                 "numerator" => {
                     self.numerator = map.next_value()?;
@@ -57,6 +58,7 @@ impl<'de> Visitor<'de> for RealVisitor {
                     self.im = map.next_value()?;
                 }
                 _ => {
+
                     // drop
                 }
             }

@@ -1,7 +1,7 @@
 // use valkyrie_types::{testing::assert_type, ValkyrieID, ValkyrieInterface};
 
 use num::One;
-use nyar_number::{NyarInteger, NyarReal, NyarUnsigned, Zero};
+use nyar_number::{NyarDigits, NyarInteger, NyarReal, Zero};
 use std::{collections::BTreeMap, ops::Div};
 
 #[test]
@@ -28,16 +28,16 @@ fn test_primitive() {
 #[test]
 fn test_serde_unsigned() {
     let mut raw = BTreeMap::default();
-    raw.insert(0, NyarUnsigned::zero().get().clone());
-    raw.insert(1, NyarUnsigned::one().get().clone());
-    raw.insert(2, NyarUnsigned::from(u8::MAX));
-    raw.insert(3, NyarUnsigned::from(u16::MAX));
-    raw.insert(4, NyarUnsigned::from(u32::MAX));
-    raw.insert(5, NyarUnsigned::from(u64::MAX));
-    raw.insert(6, NyarUnsigned::from(u128::MAX));
+    raw.insert(0, NyarDigits::zero());
+    raw.insert(1, NyarDigits::one());
+    raw.insert(2, NyarDigits::from(u8::MAX));
+    raw.insert(3, NyarDigits::from(u16::MAX));
+    raw.insert(4, NyarDigits::from(u32::MAX));
+    raw.insert(5, NyarDigits::from(u64::MAX));
+    raw.insert(6, NyarDigits::from(u128::MAX));
     let json = serde_json::to_string_pretty(&raw).expect("!");
     println!("{}", json);
-    let map: BTreeMap<usize, NyarUnsigned> = serde_json::from_str(&json).expect("!");
+    let map: BTreeMap<usize, NyarDigits> = serde_json::from_str(&json).expect("!");
     println!("{:#?}", map)
 }
 #[test]
