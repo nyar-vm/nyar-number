@@ -1,4 +1,4 @@
-use crate::{utils::RealVisitor, NyarInteger, NyarUnsigned};
+use crate::{utils::RealVisitor, NyarDigits, NyarInteger};
 use serde::{
     de::{Error, Unexpected},
     Deserialize, Deserializer,
@@ -15,6 +15,6 @@ impl<'de> Deserialize<'de> for NyarInteger {
             // to warning
             Err(Error::invalid_type(Unexpected::Other(&real.r#type), &"type=integer"))?
         }
-        Ok(Self { sign: real.sign, digits: Gc::new(NyarUnsigned::from(real.value.unwrap_or_default())) })
+        Ok(Self { sign: real.sign, digits: NyarDigits::from(real.value.unwrap_or_default()) })
     }
 }

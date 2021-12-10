@@ -18,7 +18,7 @@ impl Num for NyarInteger {
 
 impl From<u8> for NyarInteger {
     fn from(value: u8) -> Self {
-        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned::from(value)) }
+        Self { sign: Sign::NoSign, digits: NyarDigits::from(value) }
     }
 }
 impl From<i8> for NyarInteger {
@@ -29,7 +29,7 @@ impl From<i8> for NyarInteger {
 
 impl From<u16> for NyarInteger {
     fn from(value: u16) -> Self {
-        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned::from(value)) }
+        Self { sign: Sign::NoSign, digits: NyarDigits::from(value) }
     }
 }
 impl From<i16> for NyarInteger {
@@ -40,7 +40,7 @@ impl From<i16> for NyarInteger {
 
 impl From<u32> for NyarInteger {
     fn from(value: u32) -> Self {
-        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned::from(value)) }
+        Self { sign: Sign::NoSign, digits: NyarDigits::from(value) }
     }
 }
 impl From<i32> for NyarInteger {
@@ -51,7 +51,7 @@ impl From<i32> for NyarInteger {
 
 impl From<u64> for NyarInteger {
     fn from(value: u64) -> Self {
-        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned::from(value)) }
+        Self { sign: Sign::NoSign, digits: NyarDigits::from(value) }
     }
 }
 impl From<i64> for NyarInteger {
@@ -62,7 +62,7 @@ impl From<i64> for NyarInteger {
 
 impl From<u128> for NyarInteger {
     fn from(value: u128) -> Self {
-        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned::from(value)) }
+        Self { sign: Sign::NoSign, digits: NyarDigits::from(value) }
     }
 }
 impl From<i128> for NyarInteger {
@@ -73,7 +73,7 @@ impl From<i128> for NyarInteger {
 
 impl From<usize> for NyarInteger {
     fn from(value: usize) -> Self {
-        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned::from(value)) }
+        Self { sign: Sign::NoSign, digits: NyarDigits::from(value) }
     }
 }
 impl From<isize> for NyarInteger {
@@ -83,24 +83,24 @@ impl From<isize> for NyarInteger {
 }
 impl From<BigUint> for NyarInteger {
     fn from(value: BigUint) -> Self {
-        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned::from(value)) }
+        Self { sign: Sign::NoSign, digits: NyarDigits::from(value) }
     }
 }
 impl From<&BigUint> for NyarInteger {
     fn from(value: &BigUint) -> Self {
-        Self { sign: Sign::NoSign, digits: Gc::new(NyarUnsigned::from(value.clone())) }
+        Self { sign: Sign::NoSign, digits: NyarDigits::from(value.clone()) }
     }
 }
 
 impl From<BigInt> for NyarInteger {
     fn from(value: BigInt) -> Self {
         let (lhs, rhs) = value.into_parts();
-        Self { sign: lhs, digits: Gc::new(NyarUnsigned::from(rhs)) }
+        Self { sign: lhs, digits: NyarDigits::from(rhs) }
     }
 }
 impl From<&BigInt> for NyarInteger {
     fn from(value: &BigInt) -> Self {
         let (lhs, rhs) = value.clone().into_parts();
-        Self { sign: lhs, digits: Gc::new(NyarUnsigned::from(rhs)) }
+        Self { sign: lhs, digits: NyarDigits::from(rhs) }
     }
 }

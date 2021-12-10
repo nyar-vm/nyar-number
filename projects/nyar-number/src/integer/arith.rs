@@ -1,20 +1,19 @@
 use super::*;
-use crate::unsigned::{ONE, ZERO};
 use num::Integer;
 
 impl Zero for NyarInteger {
     fn zero() -> Self {
-        Self { sign: Sign::NoSign, digits: ZERO.clone() }
+        Self { sign: Sign::NoSign, digits: NyarDigits::zero() }
     }
 
     fn is_zero(&self) -> bool {
-        self.digits.get().is_zero()
+        self.digits.is_zero()
     }
 }
 
 impl One for NyarInteger {
     fn one() -> Self {
-        Self { sign: Sign::Plus, digits: ONE.clone() }
+        Self { sign: Sign::Plus, digits: NyarDigits::one() }
     }
 }
 
@@ -58,8 +57,8 @@ impl Mul for NyarInteger {
 
     fn mul(self, rhs: Self) -> Self::Output {
         let sign = self.sign.mul(rhs.sign);
-        let lhs_view = self.digits.get();
-        let rhs_view = rhs.digits.get();
+        let lhs_view = self.digits.clone();
+        let rhs_view = rhs.digits.clone();
         if lhs_view.is_zero() || rhs_view.is_zero() {
             // non allocate path
             return NyarInteger::zero();
@@ -73,8 +72,8 @@ impl Mul for NyarInteger {
             return Self { sign, digits: self.digits.clone() };
         }
         else {
-            let value = self.digits.get().delegate().mul(rhs.digits.get().delegate());
-            Self { sign, digits: Gc::new(NyarUnsigned::from(value)) }
+            let value = self.digits.delegate().mul(rhs.digits.delegate());
+            Self { sign, digits: NyarDigits::from(value) }
         }
     }
 }
@@ -86,7 +85,7 @@ impl Div for NyarInteger {
         if rhs.is_one() {
             return self;
         }
-        else if rhs.digits.get().is_one() {
+        else if rhs.digits.is_one() {
             return Self { sign: -self.sign, digits: self.digits.clone() };
         }
         else {
@@ -153,19 +152,19 @@ impl Integer for NyarInteger {
     }
 
     fn divides(&self, other: &Self) -> bool {
-        self.digits.get().delegate().is_multiple_of(&other.digits.get().delegate())
+        self.digits.delegate().is_multiple_of(&other.digits.delegate())
     }
 
     fn is_multiple_of(&self, other: &Self) -> bool {
-        self.digits.get().delegate().is_multiple_of(&other.digits.get().delegate())
+        self.digits.delegate().is_multiple_of(&other.digits.delegate())
     }
 
     fn is_even(&self) -> bool {
-        self.digits.get().delegate().is_even()
+        self.digits.delegate().is_even()
     }
 
     fn is_odd(&self) -> bool {
-        self.digits.get().delegate().is_odd()
+        self.digits.delegate().is_odd()
     }
 
     fn div_rem(&self, other: &Self) -> (Self, Self) {

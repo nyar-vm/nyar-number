@@ -1,4 +1,4 @@
-use crate::unsigned::NyarUnsigned;
+use crate::unsigned::NyarDigits;
 use num::{bigint::Sign, BigInt, BigUint, Num, One, Signed, ToPrimitive, Zero};
 use nyar_error::NyarError;
 use shredder::{
@@ -25,7 +25,7 @@ pub struct NyarInteger {
     /// Indicates the sign bit of this number
     pub sign: Sign,
     /// Actual stored value
-    pub digits: Gc<NyarUnsigned>,
+    pub digits: NyarDigits,
 }
 
 impl Default for NyarInteger {
@@ -63,12 +63,12 @@ impl NyarInteger {
     /// Create a new signed integer and box the unsigned value
     pub fn new<T>(sign: Sign, value: T) -> Self
     where
-        T: Into<NyarUnsigned>,
+        T: Into<NyarDigits>,
     {
-        Self { sign, digits: Gc::new(value.into()) }
+        Self { sign, digits: value.into() }
     }
 
     pub(crate) fn wrapped(&self) -> BigInt {
-        BigInt::from_biguint(self.sign, self.digits.get().delegate().clone())
+        BigInt::from_biguint(self.sign, self.digits.delegate())
     }
 }

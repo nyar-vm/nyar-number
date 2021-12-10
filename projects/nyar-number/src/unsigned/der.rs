@@ -1,10 +1,10 @@
-use crate::{utils::RealVisitor, NyarUnsigned};
+use crate::{utils::RealVisitor, NyarDigits};
 use serde::{
     de::{Error, Unexpected},
     Deserialize, Deserializer,
 };
 
-impl<'de> Deserialize<'de> for NyarUnsigned {
+impl<'de> Deserialize<'de> for NyarDigits {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,

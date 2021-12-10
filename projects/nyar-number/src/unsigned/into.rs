@@ -1,6 +1,6 @@
 use super::*;
 
-impl ToPrimitive for NyarUnsigned {
+impl ToPrimitive for NyarDigits {
     fn to_isize(&self) -> Option<isize> {
         self.delegate().to_isize()
     }

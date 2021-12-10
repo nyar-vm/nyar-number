@@ -19,40 +19,37 @@ mod into;
 #[cfg(feature = "serde")]
 mod ser;
 
-pub(crate) static ZERO: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: Gc::new(vec![]) }));
-pub(crate) static ONE: LazyLock<Gc<NyarUnsigned>> = LazyLock::new(|| Gc::new(NyarUnsigned { _repr: Gc::new(vec![1]) }));
-
 /// The underlying representation of all infinite-precision numbers
 #[derive(Clone, Default, Ord, PartialOrd, Eq, PartialEq, Hash)]
-pub struct NyarUnsigned {
+pub struct NyarDigits {
     pub(crate) _repr: Gc<Vec<u64>>,
 }
 
-unsafe impl GcSafe for NyarUnsigned {}
+unsafe impl GcSafe for NyarDigits {}
 
-unsafe impl Scan for NyarUnsigned {
+unsafe impl Scan for NyarDigits {
     fn scan(&self, _: &mut Scanner<'_>) {
         // no gc item inside
     }
 }
 
-unsafe impl GcDrop for NyarUnsigned {}
+unsafe impl GcDrop for NyarDigits {}
 
-impl Debug for NyarUnsigned {
+impl Debug for NyarDigits {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let value = self.delegate();
         write!(f, "{} ({:p})", value, self._repr)
     }
 }
 
-impl Display for NyarUnsigned {
+impl Display for NyarDigits {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let value = self.delegate();
         write!(f, "{}", value)
     }
 }
 
-impl NyarUnsigned {
+impl NyarDigits {
     pub(crate) fn delegate(&self) -> BigUint {
         let bytes = self._repr.get().clone();
         unsafe { transmute::<Vec<u64>, BigUint>(bytes) }

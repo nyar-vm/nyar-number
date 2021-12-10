@@ -1,19 +1,11 @@
 use super::*;
 
-impl NyarUnsigned {
-    /// All addresses with a value of 0
-    pub fn zero() -> Gc<Self> {
-        ZERO.clone()
-    }
-    /// All addresses with a value of 1
-    pub fn one() -> Gc<Self> {
-        ONE.clone()
-    }
-}
+pub(crate) static ZERO: LazyLock<Gc<Vec<u64>>> = LazyLock::new(|| Gc::new(vec![]));
+pub(crate) static ONE: LazyLock<Gc<Vec<u64>>> = LazyLock::new(|| Gc::new(vec![1]));
 
-impl Zero for NyarUnsigned {
+impl Zero for NyarDigits {
     fn zero() -> Self {
-        ZERO.get().clone()
+        Self { _repr: ZERO.clone() }
     }
 
     fn is_zero(&self) -> bool {
@@ -21,13 +13,19 @@ impl Zero for NyarUnsigned {
     }
 }
 
-impl One for NyarUnsigned {
+impl One for NyarDigits {
     fn one() -> Self {
-        Self { _repr: Gc::new(vec![1]) }
+        Self { _repr: ONE.clone() }
+    }
+    fn is_one(&self) -> bool
+    where
+        Self: PartialEq,
+    {
+        self._repr.get()[..] == [1]
     }
 }
 
-impl Add for NyarUnsigned {
+impl Add for NyarDigits {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self::Output {
@@ -35,7 +33,7 @@ impl Add for NyarUnsigned {
     }
 }
 
-impl Mul for NyarUnsigned {
+impl Mul for NyarDigits {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
