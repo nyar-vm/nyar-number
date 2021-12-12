@@ -7,11 +7,13 @@
 
 mod complex;
 mod decimal;
+mod infinity;
 mod integer;
 mod number;
 mod rational;
 mod sign;
 mod unsigned;
+
 pub(crate) mod utils;
 
 pub use self::{decimal::NyarDecimal, integer::NyarInteger, number::NyarReal, rational::NyarRational, unsigned::NyarDigits};

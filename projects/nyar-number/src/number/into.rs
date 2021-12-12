@@ -88,8 +88,8 @@ impl ToPrimitive for NyarReal {
         match self {
             NyarReal::Rational(v) => v.to_f64(),
             NyarReal::Decimal(v) => v.to_f64(),
-            NyarReal::Indefinite => Some(f64::NAN),
             NyarReal::Infinity(_) => Some(f64::INFINITY),
+            NyarReal::Indefinite => Some(f64::NAN),
         }
     }
 }
