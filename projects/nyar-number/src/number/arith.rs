@@ -1,7 +1,4 @@
 use super::*;
-use crate::NyarReal::Infinity;
-use NyarReal::{Decimal, Rational};
-use Sign::{Minus, NoSign, Plus};
 
 impl One for NyarReal {
     fn one() -> Self {
@@ -90,7 +87,7 @@ impl Div for NyarReal {
             (Decimal(lhs), Decimal(rhs)) => lhs.safe_div(rhs),
             (Decimal(lhs), Rational(rhs)) => lhs.safe_div(rhs.as_decimal()),
             (Rational(lhs), Decimal(rhs)) => lhs.as_decimal().safe_div(rhs),
-            (Rational(lhs), Rational(rhs)) => lhs.safe_div(rhs),
+            (Rational(lhs), Rational(rhs)) => lhs.safe_div(&rhs),
         }
     }
 }

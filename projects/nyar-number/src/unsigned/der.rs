@@ -1,4 +1,5 @@
 use crate::NyarDigits;
+use num::Zero;
 use serde::{Deserialize, Deserializer};
 use shredder::Gc;
 
@@ -8,6 +9,6 @@ impl<'de> Deserialize<'de> for NyarDigits {
         D: Deserializer<'de>,
     {
         let bytes = Vec::deserialize(deserializer)?;
-        Ok(Self { _repr: Gc::new(bytes) })
+        if bytes.is_empty() { Ok(Self::zero()) } else { Ok(Self { _repr: Gc::new(bytes) }) }
     }
 }

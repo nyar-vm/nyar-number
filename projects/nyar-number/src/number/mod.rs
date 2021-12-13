@@ -1,4 +1,4 @@
-use crate::{infinity::NyarInfinity, NyarDecimal, NyarInteger, NyarRational, One, Zero};
+use crate::{infinity::NyarInfinity, NyarDecimal, NyarInteger, NyarRational, NyarReal::Infinity, One, Zero};
 use num::{bigint::Sign, BigInt, BigUint, Num, Signed};
 use nyar_error::NyarError;
 use shredder::{marker::GcSafe, Scan, Scanner};
@@ -7,6 +7,7 @@ use std::{
     ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
 };
+use NyarReal::{Decimal, Rational};
 
 mod arith;
 #[cfg(feature = "serde")]
@@ -19,6 +20,7 @@ mod ser;
 /// A real number, which can be a fraction with infinite precision or a decimal with dynamic progress
 #[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub enum NyarReal {
+    /// A infinity number
     Infinity(NyarInfinity),
     /// A signed rational number
     Rational(NyarRational),

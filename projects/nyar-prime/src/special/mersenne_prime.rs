@@ -14,6 +14,9 @@ impl MersenneNumber {
         let int = BigInt::from(i);
         MersenneNumber { index: int }
     }
+    pub fn unwrap(&self) -> &BigInt {
+        &self.index
+    }
     //pub fn nth(n: isize) -> BigInt {}
 }
 

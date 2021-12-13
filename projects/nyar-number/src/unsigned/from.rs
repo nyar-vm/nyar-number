@@ -1,4 +1,5 @@
 use super::*;
+use num::Num;
 use nyar_error::NyarError;
 
 impl FromStr for NyarDigits {
@@ -9,6 +10,13 @@ impl FromStr for NyarDigits {
     }
 }
 
+impl Num for NyarDigits {
+    type FromStrRadixErr = NyarError;
+
+    fn from_str_radix(str: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
+        Ok(BigUint::from_str_radix(str, radix)?.into())
+    }
+}
 impl From<u8> for NyarDigits {
     fn from(value: u8) -> Self {
         Self::from(value as u64)

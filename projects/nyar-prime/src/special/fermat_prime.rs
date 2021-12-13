@@ -19,7 +19,7 @@ impl FermatNumber {
     }
     //pub fn nth(n: isize) -> BigInt {}
     pub fn is_fermat_prime(&self) {
-        let index = &self.index;
+        let _ = &self.index;
         // $F_n$ is a prime，only if $3^{{{\frac  {F_{n}-1}{2}}}}\equiv -1{\pmod  {F_{n}}}$
         unimplemented!()
     }

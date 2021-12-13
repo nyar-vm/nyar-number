@@ -1,5 +1,4 @@
 use bigdecimal::num_bigint::Sign;
-use num::traits::NumOps;
 use shredder::{marker::GcSafe, Scan, Scanner};
 use std::{
     fmt::{Debug, Display, Formatter},
@@ -7,9 +6,10 @@ use std::{
 };
 use Sign::{Minus, NoSign, Plus};
 
-mod ser;
-
+#[cfg(feature = "serde")]
 mod der;
+#[cfg(feature = "serde")]
+mod ser;
 
 mod arith;
 
@@ -22,10 +22,11 @@ pub struct NyarInfinity {
 
 impl Display for NyarInfinity {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        // complex infinity ⧞ ♾
         match self.sign {
             Plus => f.write_str("+∞"),
             Minus => f.write_str("-∞"),
-            NoSign => f.write_str("∾"),
+            NoSign => f.write_str("⧝"),
         }
     }
 }

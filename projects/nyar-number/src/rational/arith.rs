@@ -1,5 +1,4 @@
 use super::*;
-use crate::{infinity::NyarInfinity, NyarReal};
 
 impl Zero for NyarRational {
     fn zero() -> Self {
@@ -51,8 +50,11 @@ impl Mul for NyarRational {
 }
 
 impl CheckedDiv for NyarRational {
-    fn checked_div(&self, _: &Self) -> Option<Self> {
-        todo!()
+    fn checked_div(&self, rhs: &Self) -> Option<Self> {
+        if rhs.is_zero() {
+            return None;
+        }
+        Some(self.delegate().div(rhs.delegate()).into())
     }
 }
 
@@ -95,14 +97,36 @@ impl Signed for NyarRational {
 }
 
 impl NyarRational {
-    pub fn safe_div(&self, rhs: Self) -> NyarReal {
-        if rhs.is_zero() {
-            NyarReal::infinity(self.sign)
-        }
-        else {
-            NyarReal::Rational(self.delegate().div(rhs.delegate()).into())
+    ///
+    ///
+    /// # Arguments
+    ///
+    /// * `rhs`:
+    ///
+    /// returns: NyarReal
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// ```
+    pub fn safe_div(&self, rhs: &Self) -> NyarReal {
+        match self.checked_div(rhs) {
+            Some(s) => NyarReal::Rational(s),
+            None => NyarReal::infinity(self.sign),
         }
     }
+    ///
+    ///
+    /// # Arguments
+    ///
+    /// * `rhs`:
+    ///
+    /// returns: NyarReal
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// ```
     pub fn safe_rem(&self, rhs: Self) -> NyarReal {
         if rhs.is_zero() {
             NyarReal::infinity(self.sign)

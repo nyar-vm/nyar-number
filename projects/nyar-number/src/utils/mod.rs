@@ -2,6 +2,7 @@ use crate::NyarReal;
 use num::{bigint::Sign, BigUint};
 #[cfg(feature = "serde")]
 use serde::de::{MapAccess, Visitor};
+#[cfg(feature = "serde")]
 use std::fmt::Formatter;
 
 /// A non-number appears in analysis or operation.

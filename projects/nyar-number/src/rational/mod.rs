@@ -6,9 +6,11 @@ mod into;
 mod der;
 #[cfg(feature = "serde")]
 mod ser;
-use crate::{NyarDecimal, NyarDigits, NyarInteger};
+use crate::{NyarDecimal, NyarDigits, NyarInteger, NyarReal};
 use bigdecimal::BigDecimal;
-use num::{bigint::Sign, BigInt, BigRational, BigUint, CheckedDiv, FromPrimitive, Num, One, Signed, ToPrimitive, Zero};
+use num::{
+    bigint::Sign, BigInt, BigRational, BigUint, CheckedDiv, FromPrimitive, Integer, Num, One, Signed, ToPrimitive, Zero,
+};
 use shredder::{
     marker::{GcDrop, GcSafe},
     Scan, Scanner,
@@ -91,6 +93,14 @@ impl NyarRational {
         let num = BigInt::from_biguint(self.sign, self.numerator.delegate().clone());
         let den = BigInt::from_biguint(Sign::Plus, self.denominator.delegate().clone());
         BigRational::new(num, den)
+    }
+    /// Reduce to standard form
+    pub fn reduce(&self) -> Option<Self> {
+        if self.denominator.is_zero() {
+            return None;
+        }
+        let gcd = self.numerator.gcd(&self.numerator);
+        Some(Self { sign: self.sign, numerator: self.numerator.div_floor(&gcd), denominator: self.denominator.div_floor(&gcd) })
     }
 
     /// Check if this represents the infinity

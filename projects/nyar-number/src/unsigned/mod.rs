@@ -1,12 +1,13 @@
-use num::{BigUint, One, ToPrimitive, Zero};
+use num::{traits::ToBytes, BigUint, CheckedSub, Integer, One, ToPrimitive, Zero};
 use shredder::{
     marker::{GcDrop, GcSafe},
     Gc, Scan, Scanner,
 };
 use std::{
+    cmp::Ordering,
     fmt::{Debug, Display, Formatter},
     mem::transmute,
-    ops::{Add, Mul},
+    ops::{Add, Div, Mul, Rem, Sub},
     str::FromStr,
     sync::LazyLock,
 };
@@ -22,6 +23,7 @@ mod ser;
 /// The underlying representation of all infinite-precision numbers
 #[derive(Clone, Default, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarDigits {
+    /// Starting from the left represents the first digit, and excess zeros on the right can be removed.
     pub(crate) _repr: Gc<Vec<u64>>,
 }
 
@@ -60,5 +62,35 @@ impl NyarDigits {
     pub(crate) fn delegate(&self) -> BigUint {
         let bytes = self._repr.get().clone();
         unsafe { transmute::<Vec<u64>, BigUint>(bytes) }
+    }
+    /// Convert from number
+    ///
+    /// # Arguments
+    ///
+    /// * `v`:
+    ///
+    /// returns: NyarDigits
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// ```
+    pub fn from_bytes(v: &[u8]) -> Self {
+        Self::from(BigUint::from_bytes_le(v))
+    }
+    /// Convert to bytes
+    ///
+    /// # Arguments
+    ///
+    /// * `v`:
+    ///
+    /// returns: NyarDigits
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// ```
+    pub fn into_bytes(self) -> Vec<u8> {
+        self.delegate().to_le_bytes()
     }
 }

@@ -1,6 +1,6 @@
 [package]
 name = "nyar-number"
-version = "0.3.4"
+version = "0.3.5"
 authors = ["Aster <192607617@qq.com>"]
 description = "Numeric types with GC optimization"
 repository = "https://github.com/nyar-vm/nyar-prime"

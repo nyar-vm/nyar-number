@@ -12,4 +12,7 @@ impl PrimorialPi {
         let int = BigInt::from(i);
         PrimorialPi { index: int }
     }
+    pub fn unwrap(&self) -> &BigInt {
+        &self.index
+    }
 }

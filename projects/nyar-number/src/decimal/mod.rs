@@ -1,6 +1,6 @@
-use crate::{NyarDigits, NyarRational, One, Zero};
+use crate::{NyarDigits, NyarRational, NyarReal, One, Zero};
 use bigdecimal::{BigDecimal, Num};
-use num::{bigint::Sign, BigInt, FromPrimitive, Signed, ToPrimitive};
+use num::{bigint::Sign, BigInt, Signed, ToPrimitive};
 use nyar_error::NyarError;
 use shredder::{
     marker::{GcDrop, GcSafe},

@@ -12,4 +12,7 @@ impl Primorial {
         let int = BigInt::from(i);
         Primorial { index: int }
     }
+    pub fn unwrap(&self) -> &BigInt{
+       & self.index
+    }
 }
