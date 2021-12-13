@@ -1,4 +1,6 @@
 use super::*;
+use crate::{infinity::NyarInfinity, NyarReal};
+use num::CheckedDiv;
 
 impl Zero for NyarDecimal {
     fn zero() -> Self {
@@ -81,5 +83,23 @@ impl Signed for NyarDecimal {
 
     fn is_negative(&self) -> bool {
         matches!(self.sign, Sign::Minus)
+    }
+}
+impl NyarDecimal {
+    pub fn safe_div(&self, rhs: Self) -> NyarReal {
+        if rhs.is_zero() {
+            NyarReal::infinity(self.sign)
+        }
+        else {
+            NyarReal::Decimal(self.delegate().div(rhs.delegate()).into())
+        }
+    }
+    pub fn safe_rem(&self, rhs: Self) -> NyarReal {
+        if rhs.is_zero() {
+            NyarReal::infinity(self.sign)
+        }
+        else {
+            NyarReal::Decimal(self.delegate().rem(rhs.delegate()).into())
+        }
     }
 }

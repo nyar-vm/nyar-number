@@ -6,8 +6,9 @@ mod into;
 mod der;
 #[cfg(feature = "serde")]
 mod ser;
-use crate::{NyarDigits, NyarInteger};
-use num::{bigint::Sign, BigInt, BigRational, BigUint, CheckedDiv, Num, One, Signed, ToPrimitive, Zero};
+use crate::{NyarDecimal, NyarDigits, NyarInteger};
+use bigdecimal::BigDecimal;
+use num::{bigint::Sign, BigInt, BigRational, BigUint, CheckedDiv, FromPrimitive, Num, One, Signed, ToPrimitive, Zero};
 use shredder::{
     marker::{GcDrop, GcSafe},
     Scan, Scanner,
@@ -18,6 +19,7 @@ use std::{
     ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
 };
+
 /// Infinite precision rational number type
 #[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarRational {
@@ -92,8 +94,7 @@ impl NyarRational {
     }
 
     /// Check if this represents the infinity
-    pub fn is_infinite(&self) -> bool {
-        // operations that require lock acquisition are placed later.
-        self.denominator.is_zero()
+    pub fn as_decimal(&self) -> NyarDecimal {
+        self.delegate().to_f64().and_then(BigDecimal::from_f64).unwrap_or_default().into()
     }
 }

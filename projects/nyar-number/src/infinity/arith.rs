@@ -1,133 +1,66 @@
 use super::*;
-use crate::{Num, One, ToPrimitive, Zero};
-use bigdecimal::num_traits::{NumCast, NumOps};
-use num::Float;
-use std::{
-    cmp::Ordering,
-    ops::{Div, Mul, Neg, Rem, Sub},
-};
+
 impl Neg for NyarInfinity {
     type Output = Self;
 
     fn neg(self) -> Self::Output {
-        todo!()
+        match self.sign {
+            Minus => Self { sign: Plus },
+            Plus => Self { sign: Minus },
+            NoSign => Self { sign: NoSign },
+        }
     }
 }
+
 impl Add for NyarInfinity {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self::Output {
         match (self.sign, rhs.sign) {
-            (Minus, Minus) => Self { sign: Minus },
             (Plus, Plus) => Self { sign: Plus },
+            (Minus, Minus) => Self { sign: Minus },
+
             _ => Self { sign: NoSign },
         }
     }
 }
+
 impl Sub for NyarInfinity {
     type Output = Self;
 
-    fn add(self, rhs: Self) -> Self::Output {
+    fn sub(self, rhs: Self) -> Self::Output {
         match (self.sign, rhs.sign) {
-            (Minus, Minus) => Self { sign: Minus },
-            (Plus, Plus) => Self { sign: Plus },
+            (Plus, Minus) => Self { sign: Plus },
+            (Minus, Plus) => Self { sign: Minus },
             _ => Self { sign: NoSign },
         }
     }
 }
 
-impl Num for NyarInfinity {
-    type FromStrRadixErr = ();
-
-    fn from_str_radix(str: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
-        todo!()
-    }
-}
-
-impl PartialEq for NyarInfinity {
-    fn eq(&self, other: &Self) -> bool {
-        todo!()
-    }
-}
-
-impl Zero for NyarInfinity {
-    fn zero() -> Self {
-        todo!()
-    }
-
-    fn is_zero(&self) -> bool {
-        todo!()
-    }
-}
-
-impl Add<Self, Output = Self> for NyarInfinity {
-    type Output = ();
-
-    fn add(self, rhs: Self) -> Self::Output {
-        todo!()
-    }
-}
-
-impl One for NyarInfinity {
-    fn one() -> Self {
-        todo!()
-    }
-}
-
-impl Mul<Self, Output = Self> for NyarInfinity {
-    type Output = ();
+impl Mul for NyarInfinity {
+    type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
-        todo!()
+        match (self.sign, rhs.sign) {
+            (Plus, Plus) | (Minus, Minus) => Self { sign: Plus },
+            (Plus, Minus) | (Minus, Plus) => Self { sign: Minus },
+            _ => Self { sign: NoSign },
+        }
     }
 }
 
-impl NumOps for NyarInfinity {}
+impl Div for NyarInfinity {
+    type Output = Self;
 
-impl Sub<Self, Output = Self> for NyarInfinity {
-    type Output = ();
-
-    fn sub(self, rhs: Self) -> Self::Output {
-        todo!()
+    fn div(self, _: Self) -> Self::Output {
+        Self { sign: NoSign }
     }
 }
 
-impl Div<Self, Output = Self> for NyarInfinity {
-    type Output = ();
+impl Rem for NyarInfinity {
+    type Output = Self;
 
-    fn div(self, rhs: Self) -> Self::Output {
-        todo!()
-    }
-}
-
-impl Rem<Self, Output = Self> for NyarInfinity {
-    type Output = ();
-
-    fn rem(self, rhs: Self) -> Self::Output {
-        todo!()
-    }
-}
-
-impl Copy for NyarInfinity {}
-
-impl NumCast for NyarInfinity {
-    fn from<T: ToPrimitive>(n: T) -> Option<Self> {
-        todo!()
-    }
-}
-
-impl ToPrimitive for NyarInfinity {
-    fn to_i64(&self) -> Option<i64> {
-        todo!()
-    }
-
-    fn to_u64(&self) -> Option<u64> {
-        todo!()
-    }
-}
-
-impl PartialOrd for NyarInfinity {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        todo!()
+    fn rem(self, _: Self) -> Self::Output {
+        Self { sign: NoSign }
     }
 }

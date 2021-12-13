@@ -14,7 +14,6 @@ impl ToPrimitive for NyarReal {
                 }
             }
             NyarReal::Decimal(_) => None,
-            NyarReal::Indefinite => None,
             NyarReal::Infinity(_) => None,
         }
     }
@@ -50,7 +49,6 @@ impl ToPrimitive for NyarReal {
                 }
             }
             NyarReal::Decimal(_) => None,
-            NyarReal::Indefinite => None,
             NyarReal::Infinity(_) => None,
         }
     }
@@ -77,19 +75,17 @@ impl ToPrimitive for NyarReal {
 
     fn to_f32(&self) -> Option<f32> {
         match self {
-            NyarReal::Rational(v) => v.to_f32(),
-            NyarReal::Decimal(v) => v.to_f32(),
-            NyarReal::Indefinite => Some(f32::NAN),
-            NyarReal::Infinity(_) => Some(f32::INFINITY),
+            Self::Rational(v) => v.to_f32(),
+            Self::Decimal(v) => v.to_f32(),
+            Self::Infinity(v) => v.to_f32(),
         }
     }
 
     fn to_f64(&self) -> Option<f64> {
         match self {
-            NyarReal::Rational(v) => v.to_f64(),
-            NyarReal::Decimal(v) => v.to_f64(),
-            NyarReal::Infinity(_) => Some(f64::INFINITY),
-            NyarReal::Indefinite => Some(f64::NAN),
+            Self::Rational(v) => v.to_f64(),
+            Self::Decimal(v) => v.to_f64(),
+            Self::Infinity(v) => v.to_f64(),
         }
     }
 }

@@ -17,7 +17,7 @@ impl FromStr for NyarDecimal {
 }
 impl From<NyarRational> for NyarDecimal {
     fn from(value: NyarRational) -> Self {
-        value.delegate().to_f64().and_then(BigDecimal::from_f64).unwrap_or_default().into()
+        value.as_decimal()
     }
 }
 

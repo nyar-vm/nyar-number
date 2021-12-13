@@ -1,4 +1,4 @@
-use crate::{NyarDecimal, NyarInteger, NyarRational, One, Zero};
+use crate::{infinity::NyarInfinity, NyarDecimal, NyarInteger, NyarRational, One, Zero};
 use num::{bigint::Sign, BigInt, BigUint, Num, Signed};
 use nyar_error::NyarError;
 use shredder::{marker::GcSafe, Scan, Scanner};
@@ -19,8 +19,7 @@ mod ser;
 /// A real number, which can be a fraction with infinite precision or a decimal with dynamic progress
 #[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub enum NyarReal {
-    Indefinite,
-    Infinity(Sign),
+    Infinity(NyarInfinity),
     /// A signed rational number
     Rational(NyarRational),
     /// A signed decimal number
@@ -32,8 +31,7 @@ unsafe impl GcSafe for NyarReal {}
 unsafe impl Scan for NyarReal {
     fn scan(&self, scanner: &mut Scanner<'_>) {
         match self {
-            NyarReal::Indefinite => {}
-            NyarReal::Infinity { .. } => {}
+            NyarReal::Infinity(_) => {}
             NyarReal::Rational(v) => v.scan(scanner),
             NyarReal::Decimal(v) => v.scan(scanner),
         }
@@ -51,12 +49,7 @@ impl Display for NyarReal {
         match self {
             Self::Rational(v) => Display::fmt(v, f),
             Self::Decimal(v) => Display::fmt(v, f),
-            Self::Indefinite => {
-                todo!()
-            }
-            Self::Infinity { .. } => {
-                todo!()
-            }
+            Self::Infinity(v) => Display::fmt(v, f),
         }
     }
 }
@@ -65,12 +58,7 @@ impl Debug for NyarReal {
         match self {
             Self::Rational(v) => Debug::fmt(v, f),
             Self::Decimal(v) => Debug::fmt(v, f),
-            Self::Indefinite => {
-                todo!()
-            }
-            Self::Infinity { .. } => {
-                todo!()
-            }
+            Self::Infinity(v) => Debug::fmt(v, f),
         }
     }
 }
@@ -142,5 +130,26 @@ impl NyarReal {
     /// ```
     pub fn parse_decimal_radix(input: &str, radix: u32) -> Result<Self, NyarError> {
         Ok(Self::Decimal(NyarDecimal::from_str_radix(input, radix)?))
+    }
+
+    /// Create a infinity number
+    ///
+    /// # Arguments
+    ///
+    /// * `sign`:
+    ///
+    /// returns: ()
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// // nothing
+    /// ```
+    pub fn infinity(sign: Sign) -> Self {
+        Self::Infinity(match sign {
+            Sign::Plus => NyarInfinity::POSITIVE_INFINITY,
+            Sign::Minus => NyarInfinity::NEGATIVE_INFINITY,
+            Sign::NoSign => NyarInfinity::INDETERMINATE,
+        })
     }
 }
