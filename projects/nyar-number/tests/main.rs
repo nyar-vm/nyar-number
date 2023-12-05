@@ -11,9 +11,7 @@ fn ready() {
 
 #[test]
 fn test_primitive() {
-    let i1 =
-        NyarReal::parse_integer("145175341267598143125685194855555555555555555666666666666666666666666666666666666666666425")
-            .expect("");
+    let i1 = NyarReal::parse_integer("115792089237316195423570985008687907853269984665640564039457584007913129639936").expect("");
     let a2 = NyarReal::zero();
     let i2 = i1.clone();
     println!("{i1:#?}");
@@ -40,6 +38,7 @@ fn test_serde_unsigned() {
     let map: BTreeMap<usize, NyarDigits> = serde_json::from_str(&json).expect("!");
     println!("{:#?}", map)
 }
+
 #[test]
 fn test_serde_integer() {
     let mut raw = BTreeMap::default();

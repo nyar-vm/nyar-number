@@ -14,3 +14,4 @@ impl Serialize for NyarInfinity {
         }
     }
 }
+

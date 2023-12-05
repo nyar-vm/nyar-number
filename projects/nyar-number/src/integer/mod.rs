@@ -18,6 +18,8 @@ mod from;
 mod into;
 #[cfg(feature = "serde")]
 mod ser;
+#[cfg(feature = "jupyter-types")]
+mod jupyter;
 
 /// An infinite-precision signed integer
 #[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
@@ -33,6 +35,8 @@ impl Default for NyarInteger {
         Self { sign: Sign::NoSign, digits: Default::default() }
     }
 }
+
+impl FromS
 
 unsafe impl GcSafe for NyarInteger {}
 

@@ -19,6 +19,8 @@ mod from;
 mod into;
 #[cfg(feature = "serde")]
 mod ser;
+#[cfg(feature = "jupyter-types")]
+mod jupyter;
 
 /// The underlying representation of all infinite-precision numbers
 #[derive(Clone, Default, Ord, PartialOrd, Eq, PartialEq, Hash)]
@@ -65,30 +67,27 @@ impl NyarDigits {
     }
     /// Convert from number
     ///
-    /// # Arguments
-    ///
-    /// * `v`:
-    ///
-    /// returns: NyarDigits
-    ///
     /// # Examples
     ///
     /// ```
+    /// # use nyar_number::NyarDigits;
+    /// let a = NyarDigits::from_bytes(&[7, 202, 154, 59]);
+    /// let b = NyarDigits::from(1000000007usize);
+    /// assert_eq!(a, b)
     /// ```
     pub fn from_bytes(v: &[u8]) -> Self {
         Self::from(BigUint::from_bytes_le(v))
     }
-    /// Convert to bytes
+    /// Convert digits to bytes
     ///
-    /// # Arguments
-    ///
-    /// * `v`:
-    ///
-    /// returns: NyarDigits
     ///
     /// # Examples
     ///
     /// ```
+    /// # use nyar_number::NyarDigits;
+    /// let a = vec![7, 202, 154, 59];
+    /// let b = NyarDigits::from(1000000007usize);
+    /// assert_eq!(a, b.into_bytes())
     /// ```
     pub fn into_bytes(self) -> Vec<u8> {
         self.delegate().to_le_bytes()

@@ -21,6 +21,8 @@ mod der;
 #[cfg(feature = "serde")]
 mod ser;
 
+mod jupyter;
+
 /// A decimal fraction with dynamic precision
 #[derive(Debug, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct NyarDecimal {

@@ -1,4 +1,4 @@
-use crate::{infinity::NyarInfinity, NyarDecimal, NyarInteger, NyarRational, NyarReal::Infinity, One, Zero};
+use crate::{infinity::NyarInfinity, NyarDecimal, NyarInteger, NyarRational, One, Zero};
 use num::{bigint::Sign, BigInt, BigUint, Num, Signed};
 use nyar_error::NyarError;
 use shredder::{marker::GcSafe, Scan, Scanner};
@@ -7,7 +7,7 @@ use std::{
     ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
 };
-use NyarReal::{Decimal, Rational};
+
 
 mod arith;
 #[cfg(feature = "serde")]

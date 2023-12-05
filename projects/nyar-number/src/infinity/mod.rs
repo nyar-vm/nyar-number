@@ -10,6 +10,8 @@ use Sign::{Minus, NoSign, Plus};
 mod der;
 #[cfg(feature = "serde")]
 mod ser;
+#[cfg(feature = "jupyter-types")]
+mod jupyter;
 
 mod arith;
 

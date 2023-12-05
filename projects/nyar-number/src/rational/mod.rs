@@ -1,11 +1,4 @@
-mod arith;
-mod from;
-mod into;
 
-#[cfg(feature = "serde")]
-mod der;
-#[cfg(feature = "serde")]
-mod ser;
 use crate::{NyarDecimal, NyarDigits, NyarInteger, NyarReal};
 use bigdecimal::BigDecimal;
 use num::{
@@ -21,6 +14,19 @@ use std::{
     ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
 };
+
+mod arith;
+mod from;
+mod into;
+
+#[cfg(feature = "serde")]
+mod der;
+#[cfg(feature = "serde")]
+mod ser;
+
+#[cfg(feature = "jupyter-types")]
+mod jupyter;
+
 
 /// Infinite precision rational number type
 #[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
