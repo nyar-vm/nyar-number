@@ -1,7 +1,7 @@
 use super::*;
 
 impl FromStr for NyarInteger {
-    type Err = NyarError;
+    type Err = SyntaxError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(BigInt::from_str(s)?.into())
@@ -9,7 +9,7 @@ impl FromStr for NyarInteger {
 }
 
 impl Num for NyarInteger {
-    type FromStrRadixErr = NyarError;
+    type FromStrRadixErr = SyntaxError;
 
     fn from_str_radix(str: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
         Ok(Self::from(BigInt::from_str_radix(str, radix)?))

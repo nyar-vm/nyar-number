@@ -21,3 +21,4 @@ impl Executed for NyarInteger {
         Value::String(buffer)
     }
 }
+

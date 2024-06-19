@@ -1,6 +1,6 @@
 use crate::unsigned::NyarDigits;
 use num::{bigint::Sign, BigInt, BigUint, Num, One, Signed, ToPrimitive, Zero};
-use nyar_error::NyarError;
+use nyar_error::{ SyntaxError};
 use shredder::{
     marker::{GcDrop, GcSafe},
     Scan, Scanner,
@@ -10,6 +10,7 @@ use std::{
     ops::{Add, Div, Mul, Neg, Rem, Sub},
     str::FromStr,
 };
+use crate::NyarDecimal;
 
 mod arith;
 #[cfg(feature = "serde")]
@@ -36,7 +37,6 @@ impl Default for NyarInteger {
     }
 }
 
-impl FromS
 
 unsafe impl GcSafe for NyarInteger {}
 

@@ -1,5 +1,5 @@
 use super::*;
-
+use crate::NyarReal::{Rational, Decimal, Infinity};
 impl One for NyarReal {
     fn one() -> Self {
         Rational(NyarRational::one())
